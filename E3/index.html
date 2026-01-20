@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StrumShop | Premium Guitars & Accessories</title>
+
+<!-- Bootstrap 5 CSS CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<div class="container">
+<a class="navbar-brand" href="#">
+<i class="bi bi-music-note-beamed"></i>
+<span class="brand-name">StrumShop</span>
+</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav ms-auto">
+<li class="nav-item">
+<a class="nav-link active" href="#home">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#guitars">Guitars</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#accessories">Accessories</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#brands">Brands</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#about">About</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#contact">Contact</a>
+</li>
+<li class="nav-item">
+<a class="nav-link cart-btn" href="#">
+<i class="bi bi-cart3"></i>
+<span class="badge bg-danger">3</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+<div class="container-fluid px-0">
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+<div class="carousel-indicators">
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+</div>
+<div class="carousel-inner">
+<div class="carousel-item active">
+<div class="carousel-img-1 carousel-image"></div>
+<div class="carousel-caption">
+<h1 class="display-4">Premium Guitars</h1>
+<p class="lead">Handcrafted excellence for every musician</p>
+<a href="#guitars" class="btn btn-primary btn-lg">Shop Now</a>
+</div>
+</div>
+<div class="carousel-item">
+<div class="carousel-img-2 carousel-image"></div>
+<div class="carousel-caption">
+<h1 class="display-4">Summer Sale</h1>
+<p class="lead">Up to 40% off on selected models</p>
+<a href="#guitars" class="btn btn-primary btn-lg">View Deals</a>
+</div>
+</div>
+<div class="carousel-item">
+<div class="carousel-img-3 carousel-image"></div>
+<div class="carousel-caption">
+<h1 class="display-4">New Arrivals</h1>
+<p class="lead">Latest models from top brands</p>
+<a href="#guitars" class="btn btn-primary btn-lg">Explore</a>
+</div>
+</div>
+</div>
+<button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+<span class="carousel-control-prev-icon"></span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+<span class="carousel-control-next-icon"></span>
+</button>
+</div>
+</div>
+</section>
+
+<!-- Featured Products Section -->
+<section id="guitars" class="py-5">
+<div class="container">
+<div class="row mb-5">
+<div class="col-12 text-center">
+<h2 class="section-title">Featured Guitars</h2>
+<p class="section-subtitle">Handpicked excellence for every player</p>
+</div>
+</div>
+
+<div class="row g-4">
+<!-- Product 1 -->
+<div class="col-md-6 col-lg-3">
+<div class="card product-card h-100">
+<img src="https://images.unsplash.com/photo-1558098329-a70b1688d025?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Fender Stratocaster">
+<div class="card-body d-flex flex-column">
+<span class="badge bg-warning mb-2">Best Seller</span>
+<h5 class="card-title">Fender Stratocaster</h5>
+<p class="card-text">American Professional II series with maple neck and alnico pickups.</p>
+<div class="mt-auto">
+<div class="d-flex justify-content-between align-items-center">
+<h4 class="text-primary">$1,499</h4>
+<span class="text-muted"><del>$1,799</del></span>
+</div>
+<button class="btn btn-primary w-100 mt-2">
+<i class="bi bi-cart-plus"></i> Add to Cart
+</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Product 2 -->
+<div class="col-md-6 col-lg-3">
+<div class="card product-card h-100">
+<img src="https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Gibson Les Paul">
+<div class="card-body d-flex flex-column">
+<span class="badge bg-danger mb-2">Limited Stock</span>
+<h5 class="card-title">Gibson Les Paul</h5>
+<p class="card-text">Standard 50s model with mahogany body and humbucker pickups.</p>
+<div class="mt-auto">
+<div class="d-flex justify-content-between align-items-center">
+<h4 class="text-primary">$2,499</h4>
+<span class="text-success">In Stock</span>
+</div>
+<button class="btn btn-primary w-100 mt-2">
+<i class="bi bi-cart-plus"></i> Add to Cart
+</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Product 3 -->
+<div class="col-md-6 col-lg-3">
+<div class="card product-card h-100">
+<img src="https://images.unsplash.com/photo-1573639470274-8e42d2492c4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Taylor 814ce">
+<div class="card-body d-flex flex-column">
+<span class="badge bg-success mb-2">New</span>
+<h5 class="card-title">Taylor 814ce</h5>
+<p class="card-text">Grand Auditorium acoustic-electric with Sitka spruce top.</p>
+<div class="mt-auto">
+<div class="d-flex justify-content-between align-items-center">
+<h4 class="text-primary">$3,299</h4>
+<span class="text-success">Free Shipping</span>
+</div>
+<button class="btn btn-primary w-100 mt-2">
+<i class="bi bi-cart-plus"></i> Add to Cart
+</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Product 4 -->
+<div class="col-md-6 col-lg-3">
+<div class="card product-card h-100">
+<img src="https://images.unsplash.com/photo-1525201548942-d8732f6617a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="PRS Custom 24">
+<div class="card-body d-flex flex-column">
+<span class="badge bg-info mb-2">Premium</span>
+<h5 class="card-title">PRS Custom 24</h5>
+<p class="card-text">10-top flame maple with 85/15 humbuckers and bird inlays.</p>
+<div class="mt-auto">
+<div class="d-flex justify-content-between align-items-center">
+<h4 class="text-primary">$4,199</h4>
+<span class="text-muted">Only 2 left</span>
+</div>
+<button class="btn btn-primary w-100 mt-2">
+<i class="bi bi-cart-plus"></i> Add to Cart
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Brands Section -->
+<section id="brands" class="py-5 bg-light">
+<div class="container">
+<div class="row mb-5">
+<div class="col-12 text-center">
+<h2 class="section-title">Our Brands</h2>
+<p class="section-subtitle">Trusted by musicians worldwide</p>
+</div>
+</div>
+
+<div class="row g-4 text-center">
+<div class="col-6 col-md-4 col-lg-2">
+<div class="brand-logo">
+<i class="bi bi-music-note-list"></i>
+<h5>Fender</h5>
+</div>
+</div>
+<div class="col-6 col-md-4 col-lg-2">
+<div class="brand-logo">
+<i class="bi bi-music-note"></i>
+<h5>Gibson</h5>
+</div>
+</div>
+<div class="col-6 col-md-4 col-lg-2">
+<div class="brand-logo">
+<i class="bi bi-music-player"></i>
+<h5>Taylor</h5>
+</div>
+</div>
+<div class="col-6 col-md-4 col-lg-2">
+<div class="brand-logo">
+<i class="bi bi-soundwave"></i>
+<h5>PRS</h5>
+</div>
+</div>
+<div class="col-6 col-md-4 col-lg-2">
+<div class="brand-logo">
+<i class="bi bi-vinyl"></i>
+<h5>Martin</h5>
+</div>
+</div>
+<div class="col-6 col-md-4 col-lg-2">
+<div class="brand-logo">
+<i class="bi bi-speaker"></i>
+<h5>Yamaha</h5>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Accessories Section -->
+<section id="accessories" class="py-5">
+<div class="container">
+<div class="row mb-5">
+<div class="col-12 text-center">
+<h2 class="section-title">Guitar Accessories</h2>
+<p class="section-subtitle">Everything you need for your instrument</p>
+</div>
+</div>
+
+<div class="row g-4">
+<div class="col-md-4">
+<div class="card accessory-card">
+<div class="row g-0">
+<div class="col-md-4">
+<img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" class="img-fluid rounded-start" alt="Guitar Strings">
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<h5 class="card-title">Elixir Strings</h5>
+<p class="card-text">Nanoweb coated acoustic guitar strings</p>
+<p class="card-text"><small class="text-primary">$19.99</small></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card accessory-card">
+<div class="row g-0">
+<div class="col-md-4">
+<img src="https://images.unsplash.com/photo-1598488032896-1ace22f0bc70?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" class="img-fluid rounded-start" alt="Guitar Pedal">
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<h5 class="card-title">BOSS DS-1</h5>
+<p class="card-text">Distortion pedal for electric guitar</p>
+<p class="card-text"><small class="text-primary">$89.99</small></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card accessory-card">
+<div class="row g-0">
+<div class="col-md-4">
+<img src="https://images.unsplash.com/photo-1520503582169-2cbcb1dc135d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" class="img-fluid rounded-start" alt="Guitar Stand">
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<h5 class="card-title">Hercules Stand</h5>
+<p class="card-text">Auto-grab guitar stand GS414B</p>
+<p class="card-text"><small class="text-primary">$49.99</small></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- About & Contact -->
+<section id="about" class="py-5 bg-dark text-white">
+<div class="container">
+<div class="row">
+<div class="col-lg-8">
+<h3>About StrumShop</h3>
+<p>We are passionate about guitars and committed to providing musicians with the finest instruments and accessories. With over 20 years of experience, our team of experts carefully selects every product in our store.</p>
+<div class="row mt-4">
+<div class="col-md-4">
+<div class="feature-item">
+<i class="bi bi-shield-check"></i>
+<h5>Quality Guarantee</h5>
+<p>All guitars professionally set up</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="feature-item">
+<i class="bi bi-truck"></i>
+<h5>Free Shipping</h5>
+<p>On orders over $500</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="feature-item">
+<i class="bi bi-arrow-counterclockwise"></i>
+<h5>30-Day Returns</h5>
+<p>Hassle-free return policy</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="contact" class="col-lg-4">
+<h3>Contact Us</h3>
+<form>
+<div class="mb-3">
+<input type="text" class="form-control" placeholder="Your Name">
+</div>
+<div class="mb-3">
+<input type="email" class="form-control" placeholder="Email Address">
+</div>
+<div class="mb-3">
+<textarea class="form-control" rows="3" placeholder="Your Message"></textarea>
+</div>
+<button type="submit" class="btn btn-primary w-100">Send Message</button>
+</form>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-black text-white py-4">
+<div class="container">
+<div class="row">
+<div class="col-md-6">
+<h5><i class="bi bi-music-note-beamed"></i> StrumShop</h5>
+<p>Premium guitars and accessories for musicians of all levels.</p>
+</div>
+<div class="col-md-3">
+<h5>Quick Links</h5>
+<ul class="list-unstyled">
+<li><a href="#home" class="text-white-50">Home</a></li>
+<li><a href="#guitars" class="text-white-50">Guitars</a></li>
+<li><a href="#accessories" class="text-white-50">Accessories</a></li>
+<li><a href="#contact" class="text-white-50">Contact</a></li>
+</ul>
+</div>
+<div class="col-md-3">
+<h5>Follow Us</h5>
+<div class="social-icons">
+<a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+<a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+<a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+<a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+</div>
+</div>
+</div>
+<hr class="bg-secondary">
+<div class="row">
+<div class="col-12 text-center">
+<p class="mb-0">&copy; 2023 StrumShop. All rights reserved.</p>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script>
+// Initialize carousel
+document.addEventListener('DOMContentLoaded', function() {
+const carousel = new bootstrap.Carousel(document.getElementById('heroCarousel'), {
+interval: 3000,
+wrap: true
+});
+
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+const targetId = this.getAttribute('href');
+if(targetId === '#') return;
+
+const targetElement = document.querySelector(targetId);
+if(targetElement) {
+window.scrollTo({
+top: targetElement.offsetTop - 70,
+behavior: 'smooth'
+});
+}
+});
+});
+
+// Add to cart functionality
+document.querySelectorAll('.btn-primary').forEach(button => {
+if(button.textContent.includes('Add to Cart')) {
+button.addEventListener('click', function() {
+const productName = this.closest('.card').querySelector('.card-title').textContent;
+alert(`${productName} added to cart!`);
+});
+}
+});
+});
+</script>
+</body>
+</html>
