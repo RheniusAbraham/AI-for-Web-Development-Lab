@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aston Martin Valkyrie | Pre-Booking Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Video Background -->
+<div class="video-background">
+<video autoplay muted loop id="bg-video">
+<source src="https://assets.mixkit.co/videos/preview/mixkit-sports-car-driving-on-a-race-track-43925-large.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+</div>
+
+<!-- Header -->
+<header>
+<div class="container">
+<h1>ASTON MARTIN VALKYRIE</h1>
+<p>THE ULTIMATE HYPERCAR EXPERIENCE</p>
+<p>Limited Production • Pre-Booking Now Open</p>
+</div>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+<!-- Introduction -->
+<section class="intro">
+<h2>RESERVE YOUR PLACE IN AUTOMOTIVE HISTORY</h2>
+<p>The Aston Martin Valkyrie represents the pinnacle of automotive engineering—a road-legal Formula 1 car developed in collaboration with Red Bull Advanced Technologies. With only 150 units being produced worldwide, this is your opportunity to own one of the most exclusive hypercars ever created.</p>
+<p>Complete the pre-booking form below to register your interest and our dedicated concierge team will contact you with further details.</p>
+</section>
+
+<!-- Content Wrapper: Specs and Form -->
+<div class="content-wrapper">
+<!-- Specifications Section -->
+<section class="specs-section">
+<h3><i class="fas fa-cogs"></i> TECHNICAL SPECIFICATIONS</h3>
+
+<div class="spec-item highlight-spec">
+<div class="spec-name">Engine</div>
+<div class="spec-value">6.5L V12 Hybrid</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Total Power Output</div>
+<div class="spec-value">1,160 HP</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Torque</div>
+<div class="spec-value">900 Nm</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">0-100 km/h (0-62 mph)</div>
+<div class="spec-value">2.5 seconds</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Top Speed</div>
+<div class="spec-value">402 km/h (250 mph)</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Weight</div>
+<div class="spec-value">1,030 kg</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Power-to-Weight Ratio</div>
+<div class="spec-value">1,126 HP/tonne</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Transmission</div>
+<div class="spec-value">7-Speed Paddle Shift</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Aerodynamic Downforce</div>
+<div class="spec-value">1,800 kg at 240 km/h</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Production Quantity</div>
+<div class="spec-value">150 units (worldwide)</div>
+</div>
+
+<div class="spec-item">
+<div class="spec-name">Price (Starting)</div>
+<div class="spec-value">£2.5 million</div>
+</div>
+
+<div class="spec-item highlight-spec">
+<div class="spec-name">Delivery Timeline</div>
+<div class="spec-value">Q4 2024 - Q2 2025</div>
+</div>
+</section>
+
+<!-- Registration Form -->
+<section class="form-section">
+<h3><i class="fas fa-pen-to-square"></i> PRE-BOOKING REGISTRATION</h3>
+<form id="registration-form">
+<div class="form-row">
+<div class="form-group">
+<label for="first-name">First Name *</label>
+<input type="text" id="first-name" name="first-name" required>
+</div>
+<div class="form-group">
+<label for="last-name">Last Name *</label>
+<input type="text" id="last-name" name="last-name" required>
+</div>
+</div>
+
+<div class="form-group">
+<label for="email">Email Address *</label>
+<input type="email" id="email" name="email" required>
+</div>
+
+<div class="form-group">
+<label for="phone">Phone Number *</label>
+<input type="text" id="phone" name="phone" required>
+</div>
+
+<div class="form-group">
+<label for="country">Country of Residence *</label>
+<select id="country" name="country" required>
+<option value="">Select Country</option>
+<option value="us">United States</option>
+<option value="uk">United Kingdom</option>
+<option value="ca">Canada</option>
+<option value="de">Germany</option>
+<option value="fr">France</option>
+<option value="ch">Switzerland</option>
+<option value="ae">United Arab Emirates</option>
+<option value="au">Australia</option>
+<option value="other">Other</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="preferred-delivery">Preferred Delivery Date</label>
+<input type="date" id="preferred-delivery" name="preferred-delivery" min="2024-10-01">
+</div>
+
+<div class="form-group">
+<label>Preferred Interior Trim *</label>
+<div class="radio-group">
+<div class="radio-option">
+<input type="radio" id="trim-carbon" name="trim" value="carbon" required>
+<label for="trim-carbon">Carbon Fiber & Alcantara</label>
+</div>
+<div class="radio-option">
+<input type="radio" id="trim-leather" name="trim" value="leather">
+<label for="trim-leather">Full Leather</label>
+</div>
+</div>
+</div>
+
+<div class="form-group">
+<label for="exterior-color">Exterior Color Preference</label>
+<select id="exterior-color" name="exterior-color">
+<option value="racing-green">Aston Martin Racing Green</option>
+<option value="liquid-silver">Liquid Silver</option>
+<option value="onyx-black">Onyx Black</option>
+<option value="white-gold">White Stone & Gold</option>
+<option value="custom">Custom Color (Additional Cost)</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="comments">Additional Requirements or Comments</label>
+<textarea id="comments" name="comments" rows="4" placeholder="Please specify any special requests or requirements..."></textarea>
+</div>
+
+<div class="form-group">
+<label for="proof-of-funds">Proof of Funds Document (Optional)</label>
+<input type="file" id="proof-of-funds" name="proof-of-funds" accept=".pdf,.jpg,.png">
+<small>Upload PDF, JPG or PNG (Max 5MB)</small>
+</div>
+
+<button type="submit" class="submit-btn">SUBMIT PRE-BOOKING REQUEST</button>
+</form>
+</section>
+</div>
+
+<!-- Media Section -->
+<div class="media-section">
+<div class="media-card">
+<h3><i class="fas fa-image"></i> VALKYRIE GALLERY</h3>
+<div class="media-content">
+<img src="https://images.unsplash.com/photo-1514316703785-7f6d665f3f4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Aston Martin Valkyrie" class="car-image">
+<p>Experience the groundbreaking aerodynamics and futuristic design of the Valkyrie.</p>
+</div>
+</div>
+
+<div class="media-card">
+<h3><i class="fas fa-film"></i> PROMOTIONAL VIDEO</h3>
+<div class="media-content">
+<video controls>
+<source src="https://assets.mixkit.co/videos/preview/mixkit-close-up-of-the-back-of-a-red-sports-car-34551-large.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<p>Witness the Valkyrie in action on the track.</p>
+</div>
+</div>
+
+<div class="media-card">
+<h3><i class="fas fa-volume-up"></i> ENGINE SOUND</h3>
+<div class="media-content">
+<img src="https://images.unsplash.com/photo-1617654116852-4c5ab1544f48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Valkyrie Engine" class="car-image">
+<p>Experience the roar of the 6.5L V12 hybrid powertrain.</p>
+<audio controls>
+<source src="https://assets.mixkit.co/sfx/preview/mixkit-sports-car-racing-1665.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+</div>
+</div>
+</div>
+</main>
+
+<!-- Footer -->
+<footer>
+<div class="container">
+<p>© 2023 Aston Martin Lagonda Global Holdings plc. All rights reserved.</p>
+<p>The Aston Martin Valkyrie is a limited production vehicle. Pre-booking does not guarantee allocation.</p>
+<p>Valkyrie specifications are subject to change without notice.</p>
+
+<div class="social-icons">
+<a href="#"><i class="fab fa-facebook"></i></a>
+<a href="#"><i class="fab fa-twitter"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="#"><i class="fab fa-youtube"></i></a>
+</div>
+</div>
+</footer>
+
+<script>
+// Form submission handling
+document.getElementById('registration-form').addEventListener('submit', function(e) {
+e.preventDefault();
+
+// Get form data
+const formData = new FormData(this);
+const formObject = {};
+formData.forEach((value, key) => {
+formObject[key] = value;
+});
+
+// In a real application, you would send this data to a server
+// For this example, we'll just show a success message
+alert('Thank you for your pre-booking request! Our concierge team will contact you within 48 hours to discuss the next steps.');
+
+// Reset form
+this.reset();
+
+// Scroll to top
+window.scrollTo({top: 0, behavior: 'smooth'});
+});
+
+// Set minimum date for delivery to October 2024
+const today = new Date();
+const minDate = new Date(2024, 9, 1); // October 1, 2024
+const dateInput = document.getElementById('preferred-delivery');
+dateInput.min = minDate.toISOString().split('T')[0];
+
+// Set a default date 6 months from now
+const defaultDate = new Date(today);
+defaultDate.setMonth(today.getMonth() + 6);
+if (defaultDate > minDate) {
+dateInput.value = defaultDate.toISOString().split('T')[0];
+}
+
+// Background video control
+const bgVideo = document.getElementById('bg-video');
+
+// Ensure video plays even if autoplay is blocked
+document.addEventListener('click', function() {
+if (bgVideo.paused) {
+bgVideo.play().catch(e => console.log("Autoplay prevented:", e));
+}
+}, { once: true });
+</script>
+</body>
+</html>
