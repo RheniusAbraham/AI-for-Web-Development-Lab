@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StrumShop | Premium Guitars & Accessories</title>
+
+<!-- Bootstrap 5 CSS CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<div class="container">
+<a class="navbar-brand" href="#" onclick="goToHome()">
+<i class="bi bi-music-note-beamed"></i>
+<span class="brand-name">StrumShop</span>
+</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav ms-auto">
+<li class="nav-item">
+<a class="nav-link active" href="#home" onclick="showSection('home')">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#guitars" onclick="showSection('guitars')">Guitars</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#accessories" onclick="showSection('accessories')">Accessories</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#brands" onclick="showSection('brands')">Brands</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#about" onclick="showSection('about')">About</a>
+</li>
+<li class="nav-item">
+<a class="nav-link cart-btn" href="#" onclick="toggleCart()">
+<i class="bi bi-cart3"></i>
+<span id="cart-count" class="badge bg-danger">0</span>
+</a>
+</li>
+</ul>
+
+<!-- Search Bar -->
+<div class="d-flex ms-3">
+<input type="text" id="search-input" class="form-control form-control-sm"
+placeholder="Search guitars..." onkeyup="searchProducts()">
+</div>
+</div>
+</div>
+</nav>
+
+<!-- Shopping Cart Modal -->
+<div id="cart-modal" class="cart-modal">
+<div class="cart-content">
+<div class="cart-header">
+<h3><i class="bi bi-cart3"></i> Shopping Cart</h3>
+<button class="close-btn" onclick="toggleCart()">&times;</button>
+</div>
+<div class="cart-body">
+<div id="cart-items" class="cart-items">
+<!-- Cart items will be added here dynamically -->
+<p class="empty-cart">Your cart is empty</p>
+</div>
+<div class="cart-summary">
+<div class="cart-total">
+<span>Total:</span>
+<span id="cart-total">$0.00</span>
+</div>
+<button class="btn btn-primary w-100 mt-3" onclick="checkout()">Checkout</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+<div class="container-fluid px-0">
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+<div class="carousel-indicators">
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+</div>
+<div class="carousel-inner">
+<div class="carousel-item active">
+<div class="carousel-img-1 carousel-image"></div>
+<div class="carousel-caption">
+<h1 class="display-4" id="main-title">Premium Guitars</h1>
+<p class="lead" id="main-subtitle">Handcrafted excellence for every musician</p>
+<button class="btn btn-primary btn-lg" onclick="showSection('guitars')">Shop Now</button>
+</div>
+</div>
+<div class="carousel-item">
+<div class="carousel-img-2 carousel-image"></div>
+<div class="carousel-caption">
+<h1 class="display-4">Summer Sale</h1>
+<p class="lead">Up to 40% off on selected models</p>
+<button class="btn btn-primary btn-lg" onclick="showSection('guitars')">View Deals</button>
+</div>
+</div>
+<div class="carousel-item">
+<div class="carousel-img-3 carousel-image"></div>
+<div class="carousel-caption">
+<h1 class="display-4">New Arrivals</h1>
+<p class="lead">Latest models from top brands</p>
+<button class="btn btn-primary btn-lg" onclick="showSection('guitars')">Explore</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Featured Products Section -->
+<section id="guitars" class="py-5">
+<div class="container">
+<div class="row mb-4">
+<div class="col-md-6">
+<h2 class="section-title">Featured Guitars</h2>
+<p class="section-subtitle">Handpicked excellence for every player</p>
+</div>
+<div class="col-md-6">
+<div class="d-flex justify-content-end align-items-center">
+<div class="me-3">
+<label for="price-filter" class="form-label">Filter by Price:</label>
+<select id="price-filter" class="form-select" onchange="filterProducts()">
+<option value="all">All Prices</option>
+<option value="0-1000">Under $1000</option>
+<option value="1000-3000">$1000 - $3000</option>
+<option value="3000+">Above $3000</option>
+</select>
+</div>
+<div>
+<label for="sort-by" class="form-label">Sort by:</label>
+<select id="sort-by" class="form-select" onchange="sortProducts()">
+<option value="default">Default</option>
+<option value="price-low">Price: Low to High</option>
+<option value="price-high">Price: High to Low</option>
+<option value="name">Name: A to Z</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+
+<div id="products-container" class="row g-4">
+<!-- Products will be loaded dynamically from JavaScript -->
+</div>
+
+<!-- Product Statistics -->
+<div class="row mt-5">
+<div class="col-12">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title">Product Statistics</h5>
+<div class="row text-center">
+<div class="col-md-3">
+<h3 id="total-products">0</h3>
+<p>Total Products</p>
+</div>
+<div class="col-md-3">
+<h3 id="avg-price">$0</h3>
+<p>Average Price</p>
+</div>
+<div class="col-md-3">
+<h3 id="min-price">$0</h3>
+<p>Lowest Price</p>
+</div>
+<div class="col-md-3">
+<h3 id="max-price">$0</h3>
+<p>Highest Price</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Product Customizer Section -->
+<section id="customizer" class="py-5 bg-light">
+<div class="container">
+<div class="row mb-5">
+<div class="col-12 text-center">
+<h2 class="section-title">Guitar Customizer</h2>
+<p class="section-subtitle">Design your dream guitar</p>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title">Customize Your Guitar</h5>
+
+<div class="mb-3">
+<label for="guitar-name" class="form-label">Guitar Name</label>
+<input type="text" id="guitar-name" class="form-control"
+placeholder="e.g., My Custom Strat" onkeyup="updateCustomGuitar()">
+</div>
+
+<div class="mb-3">
+<label for="body-color" class="form-label">Body Color</label>
+<input type="color" id="body-color" class="form-control-color"
+value="#8B4513" onchange="updateCustomGuitar()">
+</div>
+
+<div class="mb-3">
+<label for="wood-type" class="form-label">Wood Type</label>
+<select id="wood-type" class="form-select" onchange="updateCustomGuitar()">
+<option value="mahogany">Mahogany</option>
+<option value="maple">Maple</option>
+<option value="alder">Alder</option>
+<option value="ash">Ash</option>
+</select>
+</div>
+
+<div class="mb-3">
+<label for="pickup-type" class="form-label">Pickup Type</label>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="pickup-type"
+id="single-coil" value="single-coil" checked onchange="updateCustomGuitar()">
+<label class="form-check-label" for="single-coil">
+Single Coil
+</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="pickup-type"
+id="humbucker" value="humbucker" onchange="updateCustomGuitar()">
+<label class="form-check-label" for="humbucker">
+Humbucker
+</label>
+</div>
+</div>
+
+<div class="mb-3">
+<label for="add-ons" class="form-label">Add-ons</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" id="case" value="case" onchange="updateCustomGuitar()">
+<label class="form-check-label" for="case">
+Hard Case (+$150)
+</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" id="strap" value="strap" onchange="updateCustomGuitar()">
+<label class="form-check-label" for="strap">
+Leather Strap (+$50)
+</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" id="setup" value="setup" onchange="updateCustomGuitar()">
+<label class="form-check-label" for="setup">
+Professional Setup (+$100)
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card">
+<div class="card-body text-center">
+<h5 class="card-title">Your Custom Guitar</h5>
+<div id="custom-guitar-display" class="custom-guitar-display">
+<!-- Custom guitar visualization -->
+<div class="guitar-body"></div>
+<div class="guitar-neck"></div>
+<div class="guitar-headstock"></div>
+</div>
+<div class="mt-4">
+<h4 id="custom-guitar-name">My Custom Guitar</h4>
+<p id="custom-guitar-specs">Mahogany body with Single Coil pickups</p>
+<h3 class="text-primary" id="custom-guitar-price">$1,200.00</h3>
+<button class="btn btn-primary mt-3" onclick="addCustomToCart()">
+<i class="bi bi-cart-plus"></i> Add Custom Guitar to Cart
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Brands Section -->
+<section id="brands" class="py-5">
+<div class="container">
+<div class="row mb-5">
+<div class="col-12 text-center">
+<h2 class="section-title">Our Brands</h2>
+<p class="section-subtitle">Trusted by musicians worldwide</p>
+</div>
+</div>
+
+<div class="row g-4 text-center" id="brands-container">
+<!-- Brands will be loaded dynamically -->
+</div>
+</div>
+</section>
+
+<!-- About & Contact -->
+<section id="about" class="py-5 bg-dark text-white">
+<div class="container">
+<div class="row">
+<div class="col-lg-8">
+<h3>About StrumShop</h3>
+<p id="about-text">We are passionate about guitars and committed to providing musicians with the finest instruments and accessories.</p>
+
+<!-- Live Character Counter -->
+<div class="mb-4">
+<label for="feedback" class="form-label">Your Feedback</label>
+<textarea id="feedback" class="form-control" rows="3"
+placeholder="Tell us what you think..."
+onkeyup="updateCharCount()"></textarea>
+<div class="d-flex justify-content-between mt-2">
+<small id="char-count">0 characters</small>
+<small id="char-limit">Maximum 500 characters</small>
+</div>
+</div>
+
+<button class="btn btn-outline-light" onclick="submitFeedback()">Submit Feedback</button>
+</div>
+
+<div id="contact" class="col-lg-4">
+<h3>Contact Us</h3>
+<form id="contact-form" onsubmit="return validateForm()">
+<div class="mb-3">
+<input type="text" id="name" class="form-control" placeholder="Your Name">
+<small id="name-error" class="text-danger d-none">Name is required</small>
+</div>
+<div class="mb-3">
+<input type="email" id="email" class="form-control" placeholder="Email Address">
+<small id="email-error" class="text-danger d-none">Valid email is required</small>
+</div>
+<div class="mb-3">
+<textarea id="message" class="form-control" rows="3" placeholder="Your Message"></textarea>
+<small id="message-error" class="text-danger d-none">Message is required</small>
+</div>
+<button type="submit" class="btn btn-primary w-100">Send Message</button>
+<div id="form-success" class="alert alert-success mt-3 d-none">
+Message sent successfully!
+</div>
+</form>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-black text-white py-4">
+<div class="container">
+<div class="row">
+<div class="col-md-6">
+<h5><i class="bi bi-music-note-beamed"></i> StrumShop</h5>
+<p>Premium guitars and accessories for musicians of all levels.</p>
+<div class="mt-3">
+<button class="btn btn-outline-light btn-sm me-2" onclick="changeTheme('light')">Light Theme</button>
+<button class="btn btn-outline-light btn-sm me-2" onclick="changeTheme('dark')">Dark Theme</button>
+<button class="btn btn-outline-light btn-sm" onclick="changeTheme('blue')">Blue Theme</button>
+</div>
+</div>
+<div class="col-md-3">
+<h5>Quick Links</h5>
+<ul class="list-unstyled">
+<li><a href="#home" class="text-white-50" onclick="showSection('home')">Home</a></li>
+<li><a href="#guitars" class="text-white-50" onclick="showSection('guitars')">Guitars</a></li>
+<li><a href="#customizer" class="text-white-50" onclick="showSection('customizer')">Customizer</a></li>
+<li><a href="#contact" class="text-white-50" onclick="showSection('about')">Contact</a></li>
+</ul>
+</div>
+<div class="col-md-3">
+<h5>Follow Us</h5>
+<div class="social-icons">
+<a href="#" class="text-white me-3" onclick="followSocial('facebook')"><i class="bi bi-facebook"></i></a>
+<a href="#" class="text-white me-3" onclick="followSocial('instagram')"><i class="bi bi-instagram"></i></a>
+<a href="#" class="text-white me-3" onclick="followSocial('twitter')"><i class="bi bi-twitter"></i></a>
+<a href="#" class="text-white" onclick="followSocial('youtube')"><i class="bi bi-youtube"></i></a>
+</div>
+<div class="mt-3">
+<small>Visitors: <span id="visitor-count">0</span></small>
+</div>
+</div>
+</div>
+<hr class="bg-secondary">
+<div class="row">
+<div class="col-12 text-center">
+<p class="mb-0" id="copyright-text">&copy; 2023 StrumShop. All rights reserved.</p>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script src="script.js"></script>
+</body>
+</html>

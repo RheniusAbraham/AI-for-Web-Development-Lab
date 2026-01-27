@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CALCULATRON 9000 - The Ultimate Calculator</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+user-select: none;
+}
+
+:root {
+--neon-blue: #00f3ff;
+--neon-pink: #ff00ff;
+--neon-green: #00ff9d;
+--neon-orange: #ff6b00;
+--dark-bg: #0a0a1a;
+--darker-bg: #050510;
+--panel-bg: rgba(10, 15, 30, 0.9);
+--glow-blue: 0 0 10px #00f3ff, 0 0 20px #00f3ff, 0 0 30px #00f3ff;
+--glow-pink: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+--glow-green: 0 0 10px #00ff9d, 0 0 20px #00ff9d, 0 0 30px #00ff9d;
+--glow-orange: 0 0 10px #ff6b00, 0 0 20px #ff6b00, 0 0 30px #ff6b00;
+}
+
+body {
+font-family: 'Exo 2', sans-serif;
+background-color: var(--dark-bg);
+color: #fff;
+min-height: 100vh;
+overflow-x: hidden;
+background-image:
+radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 20%),
+radial-gradient(circle at 90% 80%, rgba(255, 0, 255, 0.05) 0%, transparent 20%),
+radial-gradient(circle at 50% 50%, rgba(0, 255, 157, 0.03) 0%, transparent 50%);
+position: relative;
+}
+
+/* Animated background elements */
+.bg-grid {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-image:
+linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+background-size: 50px 50px;
+z-index: -1;
+animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+0% { transform: translate(0, 0); }
+100% { transform: translate(25px, 25px); }
+}
+
+/* Header */
+.header {
+text-align: center;
+padding: 30px 20px 20px;
+position: relative;
+}
+
+.title {
+font-family: 'Orbitron', monospace;
+font-size: 3.5rem;
+font-weight: 900;
+text-transform: uppercase;
+letter-spacing: 5px;
+margin-bottom: 10px;
+background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink), var(--neon-green));
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+animation: titleGlow 3s infinite alternate;
+}
+
+@keyframes titleGlow {
+0% { text-shadow: 0 0 15px rgba(0, 243, 255, 0.5); }
+50% { text-shadow: 0 0 20px rgba(255, 0, 255, 0.5), 0 0 30px rgba(0, 243, 255, 0.3); }
+100% { text-shadow: 0 0 15px rgba(0, 255, 157, 0.5); }
+}
+
+.subtitle {
+font-family: 'Rajdhani', sans-serif;
+font-size: 1.2rem;
+letter-spacing: 2px;
+color: #a0a0ff;
+margin-bottom: 20px;
+}
+
+/* Main container */
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+display: flex;
+flex-wrap: wrap;
+gap: 30px;
+justify-content: center;
+}
+
+/* Calculator panel */
+.calculator-panel {
+flex: 1;
+min-width: 300px;
+max-width: 500px;
+background: var(--panel-bg);
+border-radius: 20px;
+padding: 25px;
+box-shadow:
+0 0 30px rgba(0, 243, 255, 0.2),
+inset 0 0 20px rgba(0, 0, 0, 0.5);
+border: 1px solid rgba(0, 243, 255, 0.2);
+position: relative;
+overflow: hidden;
+z-index: 1;
+}
+
+.calculator-panel::before {
+content: '';
+position: absolute;
+top: -2px;
+left: -2px;
+right: -2px;
+bottom: -2px;
+background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-green), var(--neon-orange));
+z-index: -1;
+border-radius: 22px;
+animation: borderRotate 4s linear infinite;
+}
+
+@keyframes borderRotate {
+0% { filter: hue-rotate(0deg); }
+100% { filter: hue-rotate(360deg); }
+}
+
+/* Display */
+.display-container {
+background: rgba(5, 10, 20, 0.9);
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 25px;
+border: 1px solid rgba(0, 243, 255, 0.3);
+box-shadow:
+inset 0 0 15px rgba(0, 0, 0, 0.7),
+0 5px 15px rgba(0, 0, 0, 0.5);
+position: relative;
+overflow: hidden;
+}
+
+.display-container::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+animation: scanline 3s infinite linear;
+}
+
+@keyframes scanline {
+0% { left: -100%; }
+100% { left: 100%; }
+}
+
+.display {
+font-family: 'Orbitron', monospace;
+font-size: 2.5rem;
+text-align: right;
+color: var(--neon-green);
+text-shadow: 0 0 10px var(--neon-green);
+min-height: 60px;
+word-break: break-all;
+overflow-wrap: break-word;
+transition: all 0.3s;
+}
+
+.expression {
+font-family: 'Rajdhani', sans-serif;
+font-size: 1.2rem;
+color: #a0a0ff;
+text-align: right;
+min-height: 30px;
+margin-bottom: 10px;
+opacity: 0.8;
+}
+
+/* Buttons grid */
+.buttons-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 15px;
+}
+
+.button {
+background: rgba(20, 25, 40, 0.9);
+border: none;
+border-radius: 10px;
+color: white;
+font-family: 'Rajdhani', sans-serif;
+font-size: 1.4rem;
+font-weight: 600;
+padding: 18px 5px;
+cursor: pointer;
+transition: all 0.2s;
+position: relative;
+overflow: hidden;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.button::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+transition: left 0.5s;
+}
+
+.button:hover::before {
+left: 100%;
+}
+
+.button:hover {
+transform: translateY(-5px);
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.button:active {
+transform: translateY(0);
+transition: transform 0.05s;
+}
+
+/* Button types */
+.num {
+background: rgba(30, 35, 50, 0.9);
+}
+
+.num:hover {
+background: rgba(40, 45, 60, 0.9);
+box-shadow: var(--glow-blue);
+}
+
+.operator {
+background: rgba(40, 20, 50, 0.9);
+color: var(--neon-pink);
+}
+
+.operator:hover {
+background: rgba(50, 25, 60, 0.9);
+box-shadow: var(--glow-pink);
+}
+
+.function {
+background: rgba(20, 40, 30, 0.9);
+color: var(--neon-green);
+font-size: 1.2rem;
+}
+
+.function:hover {
+background: rgba(25, 50, 35, 0.9);
+box-shadow: var(--glow-green);
+}
+
+.equals {
+background: rgba(50, 30, 10, 0.9);
+color: var(--neon-orange);
+grid-column: span 2;
+}
+
+.equals:hover {
+background: rgba(60, 35, 15, 0.9);
+box-shadow: var(--glow-orange);
+animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+0% { transform: translateY(-5px) scale(1); }
+100% { transform: translateY(-5px) scale(1.05); }
+}
+
+.clear {
+background: rgba(50, 10, 10, 0.9);
+color: #ff5555;
+}
+
+.clear:hover {
+background: rgba(60, 15, 15, 0.9);
+box-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555;
+}
+
+/* Special buttons */
+.special {
+background: rgba(10, 20, 40, 0.9);
+color: #a0a0ff;
+font-size: 1.1rem;
+}
+
+.special:hover {
+background: rgba(15, 25, 45, 0.9);
+box-shadow: 0 0 10px #a0a0ff;
+}
+
+/* Side panels */
+.side-panel {
+flex: 1;
+min-width: 300px;
+display: flex;
+flex-direction: column;
+gap: 30px;
+}
+
+.panel {
+background: var(--panel-bg);
+border-radius: 20px;
+padding: 25px;
+box-shadow:
+0 0 20px rgba(0, 243, 255, 0.1),
+inset 0 0 15px rgba(0, 0, 0, 0.5);
+border: 1px solid rgba(0, 243, 255, 0.1);
+}
+
+.panel-title {
+font-family: 'Orbitron', monospace;
+font-size: 1.5rem;
+color: var(--neon-blue);
+margin-bottom: 20px;
+text-align: center;
+padding-bottom: 10px;
+border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+}
+
+/* History panel */
+.history-list {
+max-height: 300px;
+overflow-y: auto;
+padding-right: 10px;
+}
+
+.history-item {
+background: rgba(10, 15, 25, 0.7);
+padding: 12px;
+margin-bottom: 10px;
+border-radius: 8px;
+border-left: 3px solid var(--neon-blue);
+font-family: 'Rajdhani', sans-serif;
+transition: all 0.3s;
+cursor: pointer;
+}
+
+.history-item:hover {
+background: rgba(15, 20, 30, 0.9);
+transform: translateX(5px);
+border-left-color: var(--neon-green);
+}
+
+.history-expression {
+color: #a0a0ff;
+font-size: 0.9rem;
+margin-bottom: 5px;
+}
+
+.history-result {
+color: var(--neon-green);
+font-weight: 600;
+font-size: 1.1rem;
+text-align: right;
+}
+
+/* Memory panel */
+.memory-buttons {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.memory-item {
+background: rgba(15, 20, 35, 0.7);
+padding: 12px;
+border-radius: 8px;
+margin-bottom: 10px;
+font-family: 'Rajdhani', sans-serif;
+display: flex;
+justify-content: space-between;
+}
+
+.memory-label {
+color: #a0a0ff;
+}
+
+.memory-value {
+color: var(--neon-green);
+font-weight: 600;
+}
+
+/* Visualizer */
+.visualizer-container {
+height: 150px;
+background: rgba(5, 10, 20, 0.7);
+border-radius: 10px;
+overflow: hidden;
+position: relative;
+margin-top: 15px;
+}
+
+#visualizer {
+width: 100%;
+height: 100%;
+}
+
+/* Scientific panel */
+.scientific-buttons {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+}
+
+/* Theme switcher */
+.theme-switcher {
+display: flex;
+justify-content: center;
+gap: 15px;
+margin-top: 20px;
+}
+
+.theme-btn {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+border: 2px solid transparent;
+cursor: pointer;
+transition: all 0.3s;
+}
+
+.theme-btn:hover {
+transform: scale(1.1);
+box-shadow: 0 0 10px white;
+}
+
+.theme-blue { background: linear-gradient(45deg, #0011ff, #00f3ff); }
+.theme-red { background: linear-gradient(45deg, #ff0000, #ff6b00); }
+.theme-green { background: linear-gradient(45deg, #00ff00, #00ff9d); }
+.theme-purple { background: linear-gradient(45deg, #9d00ff, #ff00ff); }
+.theme-active { border-color: white; box-shadow: 0 0 15px white; }
+
+/* Responsive */
+@media (max-width: 1100px) {
+.container {
+flex-direction: column;
+align-items: center;
+}
+
+.calculator-panel, .side-panel {
+max-width: 600px;
+width: 100%;
+}
+}
+
+@media (max-width: 600px) {
+.title {
+font-size: 2.5rem;
+}
+
+.buttons-grid {
+grid-template-columns: repeat(4, 1fr);
+gap: 10px;
+}
+
+.button {
+padding: 15px 5px;
+font-size: 1.2rem;
+}
+
+.display {
+font-size: 2rem;
+}
+}
+
+/* Animations */
+@keyframes buttonPress {
+0% { transform: scale(1); }
+50% { transform: scale(0.9); }
+100% { transform: scale(1); }
+}
+
+.button-press {
+animation: buttonPress 0.2s;
+}
+
+@keyframes resultGlow {
+0% { text-shadow: 0 0 10px var(--neon-green); }
+50% { text-shadow: 0 0 20px var(--neon-green), 0 0 30px var(--neon-green); }
+100% { text-shadow: 0 0 10px var(--neon-green); }
+}
+
+.result-glow {
+animation: resultGlow 0.5s;
+}
+
+@keyframes errorShake {
+0%, 100% { transform: translateX(0); }
+10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.error-shake {
+animation: errorShake 0.5s;
+color: #ff5555 !important;
+}
+
+/* Particles */
+.particles {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: -1;
+}
+
+.particle {
+position: absolute;
+background: var(--neon-blue);
+border-radius: 50%;
+opacity: 0.3;
+animation: float linear infinite;
+}
+
+@keyframes float {
+to { transform: translateY(-100px) rotate(360deg); }
+}
+
+/* Mode indicator */
+.mode-indicator {
+display: flex;
+justify-content: center;
+gap: 20px;
+margin-bottom: 20px;
+}
+
+.mode-btn {
+background: rgba(20, 25, 40, 0.7);
+border: 1px solid rgba(0, 243, 255, 0.3);
+color: #a0a0ff;
+padding: 8px 15px;
+border-radius: 20px;
+font-family: 'Rajdhani', sans-serif;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s;
+}
+
+.mode-btn.active {
+background: rgba(0, 243, 255, 0.2);
+color: var(--neon-blue);
+box-shadow: 0 0 10px var(--neon-blue);
+}
+
+/* Sound toggle */
+.sound-toggle {
+position: absolute;
+top: 20px;
+right: 20px;
+background: rgba(20, 25, 40, 0.7);
+border: 1px solid rgba(0, 243, 255, 0.3);
+color: var(--neon-blue);
+width: 50px;
+height: 50px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+font-size: 1.5rem;
+transition: all 0.3s;
+z-index: 100;
+}
+
+.sound-toggle:hover {
+background: rgba(0, 243, 255, 0.2);
+box-shadow: 0 0 15px var(--neon-blue);
+}
+
+/* Instructions */
+.instructions {
+text-align: center;
+margin-top: 30px;
+color: #a0a0ff;
+font-size: 0.9rem;
+padding: 0 20px;
+}
+</style>
+</head>
+<body>
+<!-- Animated background -->
+<div class="bg-grid"></div>
+<div class="particles" id="particles-container"></div>
+
+<!-- Sound toggle -->
+<div class="sound-toggle" id="soundToggle">
+<i class="fas fa-volume-up"></i>
+</div>
+
+<!-- Header -->
+<div class="header">
+<h1 class="title">CALCULATRON 9000</h1>
+<div class="subtitle">THE ULTIMATE CALCULATION EXPERIENCE</div>
+
+<div class="mode-indicator">
+<div class="mode-btn active" data-mode="normal">NORMAL</div>
+<div class="mode-btn" data-mode="scientific">SCIENTIFIC</div>
+<div class="mode-btn" data-mode="programmer">PROGRAMMER</div>
+</div>
+</div>
+
+<!-- Main container -->
+<div class="container">
+<!-- Calculator panel -->
+<div class="calculator-panel">
+<!-- Display -->
+<div class="display-container">
+<div class="expression" id="expression"></div>
+<div class="display" id="display">0</div>
+</div>
+
+<!-- Buttons grid -->
+<div class="buttons-grid" id="normal-buttons">
+<!-- Row 1 -->
+<button class="button function" data-action="sin">sin</button>
+<button class="button function" data-action="cos">cos</button>
+<button class="button function" data-action="tan">tan</button>
+<button class="button clear" data-action="clear">C</button>
+
+<!-- Row 2 -->
+<button class="button function" data-action="log">log</button>
+<button class="button function" data-action="ln">ln</button>
+<button class="button function" data-action="sqrt">√</button>
+<button class="button operator" data-action="/">÷</button>
+
+<!-- Row 3 -->
+<button class="button special" data-action="pi">π</button>
+<button class="button num" data-value="7">7</button>
+<button class="button num" data-value="8">8</button>
+<button class="button num" data-value="9">9</button>
+
+<!-- Row 4 -->
+<button class="button special" data-action="e">e</button>
+<button class="button num" data-value="4">4</button>
+<button class="button num" data-value="5">5</button>
+<button class="button num" data-value="6">6</button>
+
+<!-- Row 5 -->
+<button class="button function" data-action="x^2">x²</button>
+<button class="button num" data-value="1">1</button>
+<button class="button num" data-value="2">2</button>
+<button class="button num" data-value="3">3</button>
+
+<!-- Row 6 -->
+<button class="button function" data-action="x^y">x^y</button>
+<button class="button num" data-value="0">0</button>
+<button class="button num" data-value=".">.</button>
+<button class="button operator" data-action="*">×</button>
+
+<!-- Row 7 -->
+<button class="button operator" data-action="+/-">±</button>
+<button class="button operator" data-action="-">-</button>
+<button class="button operator" data-action="+">+</button>
+<button class="button equals" data-action="=">=</button>
+</div>
+
+<!-- Scientific buttons (hidden by default) -->
+<div class="buttons-grid" id="scientific-buttons" style="display: none;">
+<!-- Row 1 -->
+<button class="button function" data-action="asin">sin⁻¹</button>
+<button class="button function" data-action="acos">cos⁻¹</button>
+<button class="button function" data-action="atan">tan⁻¹</button>
+<button class="button clear" data-action="clear">C</button>
+
+<!-- Row 2 -->
+<button class="button function" data-action="log10">log₁₀</button>
+<button class="button function" data-action="exp">exp</button>
+<button class="button function" data-action="fact">x!</button>
+<button class="button operator" data-action="/">÷</button>
+
+<!-- Row 3 -->
+<button class="button special" data-action="rand">RAND</button>
+<button class="button num" data-value="7">7</button>
+<button class="button num" data-value="8">8</button>
+<button class="button num" data-value="9">9</button>
+
+<!-- Row 4 -->
+<button class="button function" data-action="sinh">sinh</button>
+<button class="button num" data-value="4">4</button>
+<button class="button num" data-value="5">5</button>
+<button class="button num" data-value="6">6</button>
+
+<!-- Row 5 -->
+<button class="button function" data-action="cosh">cosh</button>
+<button class="button num" data-value="1">1</button>
+<button class="button num" data-value="2">2</button>
+<button class="button num" data-value="3">3</button>
+
+<!-- Row 6 -->
+<button class="button function" data-action="tanh">tanh</button>
+<button class="button num" data-value="0">0</button>
+<button class="button num" data-value=".">.</button>
+<button class="button operator" data-action="*">×</button>
+
+<!-- Row 7 -->
+<button class="button operator" data-action="+/-">±</button>
+<button class="button operator" data-action="-">-</button>
+<button class="button operator" data-action="+">+</button>
+<button class="button equals" data-action="=">=</button>
+</div>
+
+<!-- Theme switcher -->
+<div class="theme-switcher">
+<div class="theme-btn theme-blue active" data-theme="blue"></div>
+<div class="theme-btn theme-red" data-theme="red"></div>
+<div class="theme-btn theme-green" data-theme="green"></div>
+<div class="theme-btn theme-purple" data-theme="purple"></div>
+</div>
+</div>
+
+<!-- Side panels -->
+<div class="side-panel">
+<!-- History panel -->
+<div class="panel">
+<h3 class="panel-title"><i class="fas fa-history"></i> CALCULATION HISTORY</h3>
+<div class="history-list" id="historyList">
+<!-- History items will be added here -->
+<div class="history-item">
+<div class="history-expression">No calculations yet</div>
+<div class="history-result">0</div>
+</div>
+</div>
+
+<div class="visualizer-container">
+<canvas id="visualizer"></canvas>
+</div>
+</div>
+
+<!-- Memory panel -->
+<div class="panel">
+<h3 class="panel-title"><i class="fas fa-memory"></i> MEMORY FUNCTIONS</h3>
+
+<div class="memory-buttons">
+<button class="button special" data-action="mc">MC</button>
+<button class="button special" data-action="mr">MR</button>
+<button class="button special" data-action="m+">M+</button>
+<button class="button special" data-action="m-">M-</button>
+<button class="button special" data-action="ms">MS</button>
+<button class="button special" data-action="clear-history">CLEAR</button>
+</div>
+
+<div id="memoryList">
+<div class="memory-item">
+<span class="memory-label">Memory 1:</span>
+<span class="memory-value" id="memory1">0</span>
+</div>
+<div class="memory-item">
+<span class="memory-label">Memory 2:</span>
+<span class="memory-value" id="memory2">0</span>
+</div>
+<div class="memory-item">
+<span class="memory-label">Memory 3:</span>
+<span class="memory-value" id="memory3">0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Instructions -->
+<div class="instructions">
+<p>USE KEYBOARD: Numbers (0-9), Operators (+, -, *, /), Enter (=), Escape (Clear)</p>
+<p>TOGGLE MODES: Normal, Scientific, Programmer | THEME: Click colored circles</p>
+</div>
+
+<!-- Audio elements for sound effects -->
+<audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" preload="auto"></audio>
+<audio id="equalsSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+<audio id="clearSound" src="https://assets.mixkit.co/sfx/preview/mixkit-plastic-bubble-click-1124.mp3" preload="auto"></audio>
+<audio id="errorSound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
+
+<script>
+// ====================== MAIN CALCULATOR LOGIC ======================
+class UltimateCalculator {
+constructor() {
+this.display = document.getElementById('display');
+this.expressionDisplay = document.getElementById('expression');
+this.currentValue = '0';
+this.previousValue = null;
+this.operation = null;
+this.waitingForNewValue = false;
+this.decimalAdded = false;
+this.history = [];
+this.memory = [0, 0, 0];
+this.currentMemory = 0;
+this.soundEnabled = true;
+this.currentMode = 'normal';
+this.lastResult = null;
+
+this.initialize();
+this.createParticles();
+this.initializeVisualizer();
+}
+
+initialize() {
+// Set up button event listeners
+this.setupButtonListeners();
+
+// Set up keyboard support
+this.setupKeyboardSupport();
+
+// Set up mode switching
+this.setupModeSwitching();
+
+// Set up theme switching
+this.setupThemeSwitching();
+
+// Set up sound toggle
+this.setupSoundToggle();
+
+// Load from localStorage if available
+this.loadFromStorage();
+
+// Update memory display
+this.updateMemoryDisplay();
+}
+
+setupButtonListeners() {
+// Number buttons
+document.querySelectorAll('.num').forEach(button => {
+button.addEventListener('click', () => {
+this.playSound('click');
+this.addNumber(button.getAttribute('data-value'));
+this.animateButton(button);
+});
+});
+
+// Operator buttons
+document.querySelectorAll('.operator').forEach(button => {
+button.addEventListener('click', () => {
+this.playSound('click');
+this.setOperation(button.getAttribute('data-action'));
+this.animateButton(button);
+});
+});
+
+// Function buttons
+document.querySelectorAll('.function').forEach(button => {
+button.addEventListener('click', () => {
+this.playSound('click');
+this.executeFunction(button.getAttribute('data-action'));
+this.animateButton(button);
+});
+});
+
+// Special buttons
+document.querySelectorAll('.special').forEach(button => {
+button.addEventListener('click', () => {
+this.playSound('click');
+const action = button.getAttribute('data-action');
+
+if (action === 'pi') {
+this.addNumber(Math.PI.toString().substring(0, 10));
+} else if (action === 'e') {
+this.addNumber(Math.E.toString().substring(0, 10));
+} else if (action === 'rand') {
+this.addNumber(Math.random().toString().substring(0, 10));
+} else {
+this.executeMemoryFunction(action);
+}
+
+this.animateButton(button);
+});
+});
+
+// Clear button
+document.querySelectorAll('.clear').forEach(button => {
+button.addEventListener('click', () => {
+this.playSound('clear');
+this.clear();
+this.animateButton(button);
+});
+});
+
+// Equals button
+document.querySelectorAll('.equals').forEach(button => {
+button.addEventListener('click', () => {
+this.playSound('equals');
+this.calculate();
+this.animateButton(button);
+});
+});
+}
+
+setupKeyboardSupport() {
+document.addEventListener('keydown', (e) => {
+// Prevent default for calculator keys
+if (this.isCalculatorKey(e.key)) {
+e.preventDefault();
+}
+
+// Number keys
+if (e.key >= '0' && e.key <= '9') {
+this.playSound('click');
+this.addNumber(e.key);
+this.animatePressedKey(e.key);
+}
+
+// Decimal point
+else if (e.key === '.') {
+this.playSound('click');
+this.addDecimal();
+this.animatePressedKey('.');
+}
+
+// Operators
+else if (e.key === '+') {
+this.playSound('click');
+this.setOperation('+');
+this.animatePressedKey('+');
+}
+else if (e.key === '-') {
+this.playSound('click');
+this.setOperation('-');
+this.animatePressedKey('-');
+}
+else if (e.key === '*') {
+this.playSound('click');
+this.setOperation('*');
+this.animatePressedKey('*');
+}
+else if (e.key === '/') {
+this.playSound('click');
+this.setOperation('/');
+this.animatePressedKey('/');
+}
+
+// Equals or Enter
+else if (e.key === '=' || e.key === 'Enter') {
+this.playSound('equals');
+this.calculate();
+this.animatePressedKey('=');
+}
+
+// Clear or Escape
+else if (e.key === 'Escape' || e.key === 'Delete') {
+this.playSound('clear');
+this.clear();
+this.animatePressedKey('C');
+}
+
+// Backspace
+else if (e.key === 'Backspace') {
+this.playSound('click');
+this.backspace();
+this.animatePressedKey('⌫');
+}
+});
+}
+
+isCalculatorKey(key) {
+const calculatorKeys = [
+'0','1','2','3','4','5','6','7','8','9',
+'+','-','*','/','=','.','Enter','Escape',
+'Delete','Backspace'
+];
+return calculatorKeys.includes(key);
+}
+
+setupModeSwitching() {
+const modeButtons = document.querySelectorAll('.mode-btn');
+const normalButtons = document.getElementById('normal-buttons');
+const scientificButtons = document.getElementById('scientific-buttons');
+
+modeButtons.forEach(button => {
+button.addEventListener('click', () => {
+const mode = button.getAttribute('data-mode');
+
+// Update active button
+modeButtons.forEach(btn => btn.classList.remove('active'));
+button.classList.add('active');
+
+// Switch mode
+this.currentMode = mode;
+
+if (mode === 'normal') {
+normalButtons.style.display = 'grid';
+scientificButtons.style.display = 'none';
+} else if (mode === 'scientific') {
+normalButtons.style.display = 'none';
+scientificButtons.style.display = 'grid';
+} else if (mode === 'programmer') {
+normalButtons.style.display = 'grid';
+scientificButtons.style.display = 'none';
+// In a real implementation, you would switch to programmer buttons
+}
+
+this.playSound('click');
+this.animateButton(button);
+});
+});
+}
+
+setupThemeSwitching() {
+const themeButtons = document.querySelectorAll('.theme-btn');
+const root = document.documentElement;
+
+const themes = {
+blue: {
+'--neon-blue': '#00f3ff',
+'--neon-pink': '#ff00ff',
+'--neon-green': '#00ff9d',
+'--neon-orange': '#ff6b00'
+},
+red: {
+'--neon-blue': '#ff0000',
+'--neon-pink': '#ff6b00',
+'--neon-green': '#ff0000',
+'--neon-orange': '#ff6b00'
+},
+green: {
+'--neon-blue': '#00ff00',
+'--neon-pink': '#00ff9d',
+'--neon-green': '#00ff00',
+'--neon-orange': '#00ff9d'
+},
+purple: {
+'--neon-blue': '#9d00ff',
+'--neon-pink': '#ff00ff',
+'--neon-green': '#9d00ff',
+'--neon-orange': '#ff00ff'
+}
+};
+
+themeButtons.forEach(button => {
+button.addEventListener('click', () => {
+const theme = button.getAttribute('data-theme');
+
+// Update active button
+themeButtons.forEach(btn => btn.classList.remove('active'));
+button.classList.add('active');
+
+// Apply theme
+const colors = themes[theme];
+for (const [property, value] of Object.entries(colors)) {
+root.style.setProperty(property, value);
+}
+
+this.playSound('click');
+this.animateButton(button);
+});
+});
+}
+
+setupSoundToggle() {
+const soundToggle = document.getElementById('soundToggle');
+const icon = soundToggle.querySelector('i');
+
+soundToggle.addEventListener('click', () => {
+this.soundEnabled = !this.soundEnabled;
+
+if (this.soundEnabled) {
+icon.className = 'fas fa-volume-up';
+soundToggle.style.boxShadow = '0 0 15px var(--neon-blue)';
+} else {
+icon.className = 'fas fa-volume-mute';
+soundToggle.style.boxShadow = 'none';
+}
+
+this.animateButton(soundToggle);
+});
+}
+
+// ====================== CALCULATION FUNCTIONS ======================
+addNumber(num) {
+if (this.waitingForNewValue) {
+this.currentValue = num;
+this.waitingForNewValue = false;
+} else {
+this.currentValue = this.currentValue === '0' ? num : this.currentValue + num;
+}
+
+this.decimalAdded = false;
+this.updateDisplay();
+}
+
+addDecimal() {
+if (!this.decimalAdded) {
+if (this.waitingForNewValue) {
+this.currentValue = '0.';
+this.waitingForNewValue = false;
+} else if (this.currentValue.indexOf('.') === -1) {
+this.currentValue += '.';
+}
+this.decimalAdded = true;
+this.updateDisplay();
+}
+}
+
+setOperation(op) {
+if (this.operation !== null && !this.waitingForNewValue) {
+this.calculate();
+}
+
+this.previousValue = this.currentValue;
+this.operation = op;
+this.waitingForNewValue = true;
+this.decimalAdded = false;
+
+// Update expression display
+this.expressionDisplay.textContent = `${this.previousValue} ${this.getOperationSymbol(op)}`;
+}
+
+getOperationSymbol(op) {
+const symbols = {
+'+': '+',
+'-': '-',
+'*': '×',
+'/': '÷',
+'x^y': '^'
+};
+return symbols[op] || op;
+}
+
+executeFunction(func) {
+const value = parseFloat(this.currentValue);
+let result;
+
+try {
+switch(func) {
+case 'sin': result = Math.sin(this.toRadians(value)); break;
+case 'cos': result = Math.cos(this.toRadians(value)); break;
+case 'tan': result = Math.tan(this.toRadians(value)); break;
+case 'asin': result = this.toDegrees(Math.asin(value)); break;
+case 'acos': result = this.toDegrees(Math.acos(value)); break;
+case 'atan': result = this.toDegrees(Math.atan(value)); break;
+case 'sinh': result = Math.sinh(value); break;
+case 'cosh': result = Math.cosh(value); break;
+case 'tanh': result = Math.tanh(value); break;
+case 'log': result = Math.log10(value); break;
+case 'ln': result = Math.log(value); break;
+case 'sqrt': result = Math.sqrt(value); break;
+case 'x^2': result = Math.pow(value, 2); break;
+case 'x^y':
+this.setOperation('x^y');
+return;
+case 'fact': result = this.factorial(value); break;
+case 'exp': result = Math.exp(value); break;
+case 'log10': result = Math.log10(value); break;
+case '+/-': result = -value; break;
+default: return;
+}
+
+// Handle errors
+if (isNaN(result) || !isFinite(result)) {
+throw new Error('Math Error');
+}
+
+this.currentValue = result.toString();
+this.addToHistory(`${func}(${value})`, result);
+this.updateDisplay();
+this.display.classList.add('result-glow');
+setTimeout(() => this.display.classList.remove('result-glow'), 500);
+
+} catch (error) {
+this.showError(error.message);
+}
+}
+
+toRadians(degrees) {
+return degrees * (Math.PI / 180);
+}
+
+toDegrees(radians) {
+return radians * (180 / Math.PI);
+}
+
+factorial(n) {
+if (n < 0 || !Number.isInteger(n)) {
+throw new Error('Invalid input');
+}
+if (n === 0 || n === 1) return 1;
+let result = 1;
+for (let i = 2; i <= n; i++) {
+result *= i;
+}
+return result;
+}
+
+calculate() {
+if (this.operation === null || this.waitingForNewValue) {
+return;
+}
+
+const prev = parseFloat(this.previousValue);
+const current = parseFloat(this.currentValue);
+let result;
+
+try {
+switch(this.operation) {
+case '+': result = prev + current; break;
+case '-': result = prev - current; break;
+case '*': result = prev * current; break;
+case '/':
+if (current === 0) throw new Error('Division by zero');
+result = prev / current;
+break;
+case 'x^y': result = Math.pow(prev, current); break;
+default: return;
+}
+
+// Handle errors
+if (isNaN(result) || !isFinite(result)) {
+throw new Error('Math Error');
+}
+
+// Round to avoid floating point precision issues
+result = Math.round(result * 100000000) / 100000000;
+
+// Add to history
+const expression = `${prev} ${this.getOperationSymbol(this.operation)} ${current}`;
+this.addToHistory(expression, result);
+
+// Update calculator state
+this.currentValue = result.toString();
+this.operation = null;
+this.previousValue = null;
+this.waitingForNewValue = true;
+this.decimalAdded = this.currentValue.includes('.');
+
+// Update display with animation
+this.expressionDisplay.textContent = expression;
+this.updateDisplay();
+this.display.classList.add('result-glow');
+setTimeout(() => this.display.classList.remove('result-glow'), 500);
+
+// Update visualizer
+this.updateVisualizer(result);
+
+} catch (error) {
+this.showError(error.message);
+}
+}
+
+clear() {
+this.currentValue = '0';
+this.previousValue = null;
+this.operation = null;
+this.waitingForNewValue = false;
+this.decimalAdded = false;
+this.expressionDisplay.textContent = '';
+this.updateDisplay();
+}
+
+backspace() {
+if (this.currentValue.length > 1) {
+this.currentValue = this.currentValue.slice(0, -1);
+if (this.currentValue === '') {
+this.currentValue = '0';
+}
+} else {
+this.currentValue = '0';
+}
+
+// Check if we removed a decimal point
+if (!this.currentValue.includes('.')) {
+this.decimalAdded = false;
+}
+
+this.updateDisplay();
+}
+
+// ====================== MEMORY FUNCTIONS ======================
+executeMemoryFunction(action) {
+const value = parseFloat(this.currentValue);
+
+switch(action) {
+case 'mc': // Memory clear
+this.memory[this.currentMemory] = 0;
+break;
+case 'mr': // Memory recall
+this.currentValue = this.memory[this.currentMemory].toString();
+this.updateDisplay();
+break;
+case 'm+': // Memory add
+this.memory[this.currentMemory] += value;
+break;
+case 'm-': // Memory subtract
+this.memory[this.currentMemory] -= value;
+break;
+case 'ms': // Memory store
+this.memory[this.currentMemory] = value;
+break;
+case 'clear-history':
+this.history = [];
+this.updateHistoryDisplay();
+break;
+}
+
+this.updateMemoryDisplay();
+this.saveToStorage();
+}
+
+updateMemoryDisplay() {
+for (let i = 0; i < 3; i++) {
+const memoryElement = document.getElementById(`memory${i+1}`);
+if (memoryElement) {
+memoryElement.textContent = this.memory[i].toString();
+}
+}
+}
+
+// ====================== DISPLAY FUNCTIONS ======================
+updateDisplay() {
+// Format the number for display
+let displayValue = this.currentValue;
+
+// Add commas for thousands
+if (displayValue.includes('.')) {
+const parts = displayValue.split('.');
+parts[0] = this.formatWithCommas(parts[0]);
+displayValue = parts.join('.');
+} else {
+displayValue = this.formatWithCommas(displayValue);
+}
+
+this.display.textContent = displayValue;
+
+// Limit display length
+if (displayValue.length > 15) {
+this.display.style.fontSize = '1.8rem';
+} else {
+this.display.style.fontSize = '2.5rem';
+}
+}
+
+formatWithCommas(numberString) {
+// Remove any existing commas
+let withoutCommas = numberString.replace(/,/g, '');
+
+// Handle negative numbers
+const isNegative = withoutCommas.startsWith('-');
+if (isNegative) {
+withoutCommas = withoutCommas.substring(1);
+}
+
+// Add commas
+const withCommas = withoutCommas.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+return isNegative ? '-' + withCommas : withCommas;
+}
+
+showError(message) {
+this.playSound('error');
+this.display.textContent = message;
+this.display.classList.add('error-shake');
+this.display.style.color = '#ff5555';
+
+setTimeout(() => {
+this.display.classList.remove('error-shake');
+this.display.style.color = '';
+this.updateDisplay();
+}, 1000);
+}
+
+// ====================== HISTORY FUNCTIONS ======================
+addToHistory(expression, result) {
+this.history.unshift({
+expression,
+result,
+timestamp: new Date()
+});
+
+// Keep only last 10 items
+if (this.history.length > 10) {
+this.history.pop();
+}
+
+this.updateHistoryDisplay();
+this.saveToStorage();
+}
+
+updateHistoryDisplay() {
+const historyList = document.getElementById('historyList');
+historyList.innerHTML = '';
+
+if (this.history.length === 0) {
+historyList.innerHTML = `
+<div class="history-item">
+<div class="history-expression">No calculations yet</div>
+<div class="history-result">0</div>
+</div>
+`;
+return;
+}
+
+this.history.forEach((item, index) => {
+const historyItem = document.createElement('div');
+historyItem.className = 'history-item';
+historyItem.innerHTML = `
+<div class="history-expression">${item.expression}</div>
+<div class="history-result">${this.formatWithCommas(item.result.toString())}</div>
+`;
+
+// Click to use this result
+historyItem.addEventListener('click', () => {
+this.currentValue = item.result.toString();
+this.updateDisplay();
+this.playSound('click');
+});
+
+historyList.appendChild(historyItem);
+});
+}
+
+// ====================== ANIMATIONS ======================
+animateButton(button) {
+button.classList.add('button-press');
+setTimeout(() => {
+button.classList.remove('button-press');
+}, 200);
+}
+
+animatePressedKey(key) {
+// Find button with this key
+let button;
+
+if (key >= '0' && key <= '9') {
+button = document.querySelector(`.num[data-value="${key}"]`);
+} else if (key === '.') {
+button = document.querySelector(`.num[data-value="."]`);
+} else if (key === '+') {
+button = document.querySelector(`.operator[data-action="+"]`);
+} else if (key === '-') {
+button = document.querySelector(`.operator[data-action="-"]`);
+} else if (key === '*') {
+button = document.querySelector(`.operator[data-action="*"]`);
+} else if (key === '/') {
+button = document.querySelector(`.operator[data-action="/"]`);
+} else if (key === '=' || key === 'Enter') {
+button = document.querySelector(`.equals`);
+} else if (key === 'Escape' || key === 'Delete') {
+button = document.querySelector(`.clear`);
+} else if (key === 'Backspace') {
+// No specific button for backspace
+return;
+}
+
+if (button) {
+this.animateButton(button);
+}
+}
+
+// ====================== VISUALIZER ======================
+initializeVisualizer() {
+this.canvas = document.getElementById('visualizer');
+this.ctx = this.canvas.getContext('2d');
+this.canvas.width = this.canvas.offsetWidth;
+this.canvas.height = this.canvas.offsetHeight;
+
+this.visualizerData = [];
+this.maxDataPoints = 100;
+
+// Handle window resize
+window.addEventListener('resize', () => {
+this.canvas.width = this.canvas.offsetWidth;
+this.canvas.height = this.canvas.offsetHeight;
+});
+
+// Start animation
+this.animateVisualizer();
+}
+
+updateVisualizer(value) {
+// Add new data point
+const normalizedValue = Math.abs(value) % 100 / 100; // Normalize to 0-1
+this.visualizerData.push(normalizedValue);
+
+// Keep only last maxDataPoints
+if (this.visualizerData.length > this.maxDataPoints) {
+this.visualizerData.shift();
+}
+}
+
+animateVisualizer() {
+this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+if (this.visualizerData.length > 0) {
+const barWidth = this.canvas.width / this.visualizerData.length;
+
+// Draw gradient background
+const gradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
+gradient.addColorStop(0, 'rgba(0, 243, 255, 0.1)');
+gradient.addColorStop(0.5, 'rgba(255, 0, 255, 0.1)');
+gradient.addColorStop(1, 'rgba(0, 255, 157, 0.1)');
+
+this.ctx.fillStyle = gradient;
+this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+// Draw bars
+for (let i = 0; i < this.visualizerData.length; i++) {
+const value = this.visualizerData[i];
+const barHeight = value * this.canvas.height;
+
+// Create gradient for each bar
+const barGradient = this.ctx.createLinearGradient(0, this.canvas.height - barHeight, 0, this.canvas.height);
+barGradient.addColorStop(0, 'rgba(0, 243, 255, 0.8)');
+barGradient.addColorStop(1, 'rgba(0, 243, 255, 0.2)');
+
+this.ctx.fillStyle = barGradient;
+this.ctx.fillRect(i * barWidth, this.canvas.height - barHeight, barWidth - 1, barHeight);
+
+// Add glow effect
+this.ctx.shadowColor = 'rgba(0, 243, 255, 0.5)';
+this.ctx.shadowBlur = 10;
+this.ctx.fillRect(i * barWidth, this.canvas.height - barHeight, barWidth - 1, barHeight);
+this.ctx.shadowBlur = 0;
+}
+}
+
+requestAnimationFrame(() => this.animateVisualizer());
+}
+
+// ====================== PARTICLES ======================
+createParticles() {
+const container = document.getElementById('particles-container');
+const particleCount = 50;
+
+for (let i = 0; i < particleCount; i++) {
+const particle = document.createElement('div');
+particle.className = 'particle';
+
+// Random size
+const size = Math.random() * 5 + 2;
+particle.style.width = `${size}px`;
+particle.style.height = `${size}px`;
+
+// Random position
+particle.style.left = `${Math.random() * 100}%`;
+particle.style.top = `${Math.random() * 100 + 100}%`;
+
+// Random color
+const colors = ['#00f3ff', '#ff00ff', '#00ff9d', '#ff6b00'];
+const color = colors[Math.floor(Math.random() * colors.length)];
+particle.style.background = color;
+
+// Random animation
+const duration = Math.random() * 20 + 10;
+const delay = Math.random() * 5;
+particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+
+container.appendChild(particle);
+}
+}
+
+// ====================== SOUND ======================
+playSound(type) {
+if (!this.soundEnabled) return;
+
+const soundMap = {
+'click': document.getElementById('clickSound'),
+'equals': document.getElementById('equalsSound'),
+'clear': document.getElementById('clearSound'),
+'error': document.getElementById('errorSound')
+};
+
+const sound = soundMap[type];
+if (sound) {
+sound.currentTime = 0;
+sound.play().catch(e => console.log("Sound play failed:", e));
+}
+}
+
+// ====================== STORAGE ======================
+saveToStorage() {
+const data = {
+memory: this.memory,
+history: this.history.slice(0, 5) // Save only last 5
+};
+
+try {
+localStorage.setItem('calculatron9000', JSON.stringify(data));
+} catch (e) {
+console.log("Failed to save to localStorage:", e);
+}
+}
+
+loadFromStorage() {
+try {
+const data = JSON.parse(localStorage.getItem('calculatron9000'));
+
+if (data) {
+if (data.memory) {
+this.memory = data.memory;
+}
+
+if (data.history) {
+this.history = data.history;
+this.updateHistoryDisplay();
+}
+}
+} catch (e) {
+console.log("Failed to load from localStorage:", e);
+}
+}
+}
+
+// Initialize calculator when page loads
+document.addEventListener('DOMContentLoaded', () => {
+window.calculator = new UltimateCalculator();
+});
+</script>
+</body>
+</html>
