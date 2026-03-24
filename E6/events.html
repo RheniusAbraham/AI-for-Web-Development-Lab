@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Management System | Upcoming Events</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: system-ui, 'Segoe UI', 'Inter', sans-serif;
+}
+body {
+background: linear-gradient(145deg, #f7f9fc 0%, #eef2f5 100%);
+padding: 2rem;
+}
+.events-container {
+max-width: 1000px;
+margin: 0 auto;
+display: flex;
+flex-direction: column;
+gap: 1.8rem;
+}
+.event {
+background: white;
+border-radius: 1.5rem;
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+transition: all 0.2s;
+padding: 1.2rem 1.8rem;
+border-left: 6px solid #2c7a4d;
+}
+.event h3 {
+font-size: 1.5rem;
+color: #1e2f3f;
+margin-bottom: 0.4rem;
+transition: all 0.2s;
+}
+.event-date {
+font-size: 0.9rem;
+color: #5a6e7c;
+margin-bottom: 0.8rem;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+.toggle-details {
+background: #2c7a4d;
+color: white;
+border: none;
+padding: 0.5rem 1.2rem;
+border-radius: 2rem;
+font-weight: 600;
+cursor: pointer;
+margin-top: 0.5rem;
+transition: 0.2s;
+}
+.toggle-details:hover {
+background: #1f5f3c;
+transform: scale(0.97);
+}
+.details {
+display: none;
+margin-top: 1rem;
+padding: 1rem;
+background: #f8fafc;
+border-radius: 1rem;
+border: 1px solid #e2e8f0;
+}
+.details p {
+margin-bottom: 0.8rem;
+color: #2d3e50;
+}
+.register-btn {
+background: #ffb347;
+border: none;
+padding: 0.5rem 1.2rem;
+border-radius: 2rem;
+font-weight: bold;
+cursor: pointer;
+transition: 0.2s;
+margin-top: 0.5rem;
+display: inline-block;
+}
+.register-btn:hover {
+background: #ff9f1c;
+transform: scale(0.96);
+}
+.highlight-event {
+background-color: #fff7e5;
+border-left-color: #ffb347;
+}
+.highlight-title {
+color: #ff8c42;
+text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+footer {
+text-align: center;
+margin-top: 2rem;
+color: #6c86a3;
+font-size: 0.8rem;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="events-container">
+<!-- Event 1 -->
+<div class="event" id="event1">
+<h3>🌟 Tech & AI Summit 2026</h3>
+<p class="event-date">📅 June 12, 2026 · 10:00 AM (UTC+2)</p>
+<button class="toggle-details">Show Details</button>
+<div class="details">
+<p>✨ Dive into the future of AI, hands‑on workshops, keynote by leading researchers.<br>
+🎟️ Limited seats – first come, first served.</p>
+<button class="register-btn">📝 Register Now</button>
+</div>
+</div>
+
+<!-- Event 2 -->
+<div class="event" id="event2">
+<h3>🎨 Creative Design Fest</h3>
+<p class="event-date">📅 July 5–7, 2026 · All Day (Hybrid)</p>
+<button class="toggle-details">Show Details</button>
+<div class="details">
+<p>🖌️ Networking, design challenges, portfolio reviews. Meet top designers & agencies.<br>
+⭐ Early bird tickets available.</p>
+<button class="register-btn">📝 Register Now</button>
+</div>
+</div>
+
+<!-- Event 3 -->
+<div class="event" id="event3">
+<h3>🚀 Startup Pitch Night</h3>
+<p class="event-date">📅 August 20, 2026 · 6:00 PM (UTC+1)</p>
+<button class="toggle-details">Show Details</button>
+<div class="details">
+<p>💡 Pitch your idea to investors, win mentorship & prizes. Open to all entrepreneurs.<br>
+🍕 Free entry + networking dinner.</p>
+<button class="register-btn">📝 Register Now</button>
+</div>
+</div>
+</div>
+<footer>✨ Click "Show Details" to learn more and register</footer>
+
+<script>
+$(document).ready(function() {
+// 1. Handle "Show Details" / "Hide Details" button click
+$('.toggle-details').on('click', function() {
+// Get the parent event container using traversing (closest)
+const $eventDiv = $(this).closest('.event');
+
+// 2. Toggle the hidden details div with slideToggle effect
+const $details = $eventDiv.find('.details');
+$details.slideToggle(300);
+
+// 3. Change button text: if currently "Show Details" -> "Hide Details", else revert
+const $btn = $(this);
+if ($btn.text() === 'Show Details') {
+$btn.text('Hide Details');
+} else {
+$btn.text('Show Details');
+}
+
+// 4. Change background color of ONLY the selected event using css()
+// Also remove highlight from any other event (optional, but spec says "only the selected event")
+$('.event').css('background-color', ''); // reset all
+$eventDiv.css('background-color', '#fff7e5'); // light yellow highlight
+// also add a class for border change? but we use css() as required
+$eventDiv.addClass('highlight-event'); // optional, but css method was used above
+
+// 5. Use traversing to access the corresponding <h3> element and highlight it
+const $h3 = $eventDiv.find('h3');
+// Reset other h3 highlights
+$('.event h3').css('color', '').removeClass('highlight-title');
+$h3.css('color', '#ff8c42').addClass('highlight-title');
+
+// 6. Retrieve the Event Title using jQuery methods and display in an alert box
+const eventTitle = $h3.text().trim();
+alert(`📢 Event selected: ${eventTitle}\n\nClick "Register" inside the details to secure your spot!`);
+});
+
+// 7. Handle "Register" button click: redirect to registration form with event name as query param
+$('.register-btn').on('click', function(e) {
+e.stopPropagation(); // prevent accidental toggling if button is inside details
+// Find the event title from the parent event (using traversing)
+const $eventDiv = $(this).closest('.event');
+const eventTitle = $eventDiv.find('h3').text().trim();
+// Encode for URL
+const encodedTitle = encodeURIComponent(eventTitle);
+// Redirect to register.html (same directory) with query parameter
+window.location.href = `register.html?event=${encodedTitle}`;
+});
+});
+</script>
+</body>
+</html>

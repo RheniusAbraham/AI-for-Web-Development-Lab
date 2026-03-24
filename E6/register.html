@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Registration | Secure Your Spot</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+}
+body {
+min-height: 100vh;
+background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 2rem 1rem;
+}
+.event-container {
+max-width: 780px;
+width: 100%;
+background: rgba(255, 255, 255, 0.97);
+border-radius: 2rem;
+box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+overflow: hidden;
+}
+.hero {
+background: linear-gradient(112deg, #1e2a3a, #0f1722);
+padding: 1.5rem 2rem;
+text-align: center;
+color: white;
+border-bottom: 4px solid #ffb347;
+}
+.hero h1 {
+font-size: 1.8rem;
+margin-bottom: 0.3rem;
+}
+.countdown-section {
+background: #ffffff;
+padding: 1.5rem;
+text-align: center;
+border-bottom: 1px solid #e9ecef;
+}
+.countdown {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 1rem;
+}
+.time-box {
+background: #f1f5f9;
+border-radius: 1.2rem;
+padding: 0.5rem 1rem;
+min-width: 80px;
+text-align: center;
+}
+.time-number {
+font-size: 2.2rem;
+font-weight: 800;
+font-family: monospace;
+color: #1e2a3a;
+}
+.time-label {
+font-size: 0.7rem;
+text-transform: uppercase;
+font-weight: 600;
+}
+.closed-message {
+background: #d32f2f;
+color: white;
+padding: 0.8rem;
+border-radius: 60px;
+display: none;
+font-weight: bold;
+margin-top: 1rem;
+}
+.form-section {
+padding: 1.8rem;
+background: #fefcf7;
+}
+.form-group {
+margin-bottom: 1.2rem;
+}
+label {
+font-weight: 600;
+margin-bottom: 0.4rem;
+display: block;
+color: #1f3a4b;
+}
+input, select {
+width: 100%;
+padding: 0.8rem 1rem;
+border-radius: 1rem;
+border: 1px solid #d4dce4;
+font-size: 1rem;
+}
+input[readonly] {
+background-color: #eef2f5;
+cursor: default;
+}
+.register-btn {
+background: #2c7a4d;
+color: white;
+border: none;
+width: 100%;
+padding: 0.9rem;
+font-size: 1rem;
+font-weight: bold;
+border-radius: 2rem;
+cursor: pointer;
+transition: 0.2s;
+}
+.register-btn:disabled {
+background: #9aaeb9;
+cursor: not-allowed;
+}
+.success-toast {
+background: #2c7a4d;
+color: white;
+padding: 0.7rem;
+border-radius: 60px;
+text-align: center;
+margin-top: 1rem;
+display: none;
+}
+.form-footer {
+font-size: 0.7rem;
+text-align: center;
+margin-top: 1rem;
+color: #6c7e91;
+}
+.back-link {
+display: inline-block;
+margin-top: 1rem;
+color: #2c7a4d;
+text-decoration: none;
+font-weight: 500;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+<div class="event-container">
+<div class="hero">
+<h1>🎉 Secure Your Ticket</h1>
+<p id="eventTitleDisplay" style="font-weight: 500; margin-top: 0.5rem;">Event: <span style="color:#ffb347;"></span></p>
+</div>
+
+<div class="countdown-section">
+<div class="timer-title">⏳ Registration closes in</div>
+<div class="countdown" id="countdownTimer">
+<div class="time-box"><div class="time-number" id="days">00</div><div class="time-label">Days</div></div>
+<div class="time-box"><div class="time-number" id="hours">00</div><div class="time-label">Hours</div></div>
+<div class="time-box"><div class="time-number" id="minutes">00</div><div class="time-label">Minutes</div></div>
+<div class="time-box"><div class="time-number" id="seconds">00</div><div class="time-label">Seconds</div></div>
+</div>
+<div id="registrationClosedMessage" class="closed-message">🔒 REGISTRATION CLOSED 🔒</div>
+</div>
+
+<div class="form-section">
+<form id="registrationForm">
+<div class="form-group">
+<label>🎟️ Selected Event (readonly)</label>
+<input type="text" id="eventNameField" readonly placeholder="Event name will appear here">
+</div>
+<div class="form-group">
+<label>👤 Full Name</label>
+<input type="text" id="fullName" placeholder="e.g., Alex Johnson" required>
+</div>
+<div class="form-group">
+<label>📧 Email Address</label>
+<input type="email" id="email" placeholder="hello@example.com" required>
+</div>
+<div class="form-group">
+<label>🎟️ Ticket Type</label>
+<select id="ticketType">
+<option value="standard">Standard (Free)</option>
+<option value="vip">VIP Access ($99)</option>
+</select>
+</div>
+<button type="submit" class="register-btn" id="submitBtn">✍️ Register Now</button>
+<div id="formFeedback" class="success-toast"></div>
+<div class="form-footer">📌 Limited spots – first come, first served.</div>
+<a href="events.html" class="back-link">← Back to Events</a>
+</form>
+</div>
+</div>
+
+<script>
+$(document).ready(function() {
+// ========== 1. Extract event name from URL ==========
+const urlParams = new URLSearchParams(window.location.search);
+let eventName = urlParams.get('event');
+if (eventName) {
+eventName = decodeURIComponent(eventName);
+$('#eventNameField').val(eventName);
+$('#eventTitleDisplay span').text(eventName);
+} else {
+$('#eventNameField').val('General Admission');
+$('#eventTitleDisplay span').text('General Admission');
+}
+
+// ========== 2. Countdown Timer (based on question 2) ==========
+const TARGET_DATE = new Date(2026, 4, 30, 18, 0, 0); // May 30, 2026 18:00
+let countdownInterval = null;
+let isRegistrationClosed = false;
+
+function updateCountdown() {
+const now = new Date();
+const diffMs = TARGET_DATE - now;
+if (diffMs <= 0) {
+if (!isRegistrationClosed) {
+isRegistrationClosed = true;
+if (countdownInterval) clearInterval(countdownInterval);
+$('#registrationClosedMessage').show();
+$('#days, #hours, #minutes, #seconds').text('00');
+$('#submitBtn').prop('disabled', true);
+$('#registrationForm input, #registrationForm select').prop('disabled', true);
+$('#formFeedback').text('⛔ Registration closed. Thank you for your interest!').css('background','#c0392b').show();
+}
+return;
+}
+const totalSec = Math.floor(diffMs / 1000);
+const days = Math.floor(totalSec / 86400);
+const hours = Math.floor((totalSec % 86400) / 3600);
+const mins = Math.floor((totalSec % 3600) / 60);
+const secs = totalSec % 60;
+$('#days').text(String(days).padStart(2,'0'));
+$('#hours').text(String(hours).padStart(2,'0'));
+$('#minutes').text(String(mins).padStart(2,'0'));
+$('#seconds').text(String(secs).padStart(2,'0'));
+if ($('#registrationClosedMessage').is(':visible')) $('#registrationClosedMessage').hide();
+if ($('#submitBtn').prop('disabled')) $('#submitBtn').prop('disabled', false);
+}
+
+updateCountdown();
+countdownInterval = setInterval(updateCountdown, 1000);
+
+// ========== 3. Handle form submission ==========
+$('#registrationForm').on('submit', function(e) {
+e.preventDefault();
+if (isRegistrationClosed) {
+$('#formFeedback').text('❌ Registration is closed.').css('background','#c0392b').show().delay(3000).fadeOut();
+return;
+}
+const name = $('#fullName').val().trim();
+const email = $('#email').val().trim();
+if (!name || !email) {
+$('#formFeedback').text('⚠️ Please fill in name and email.').css('background','#c0392b').show().delay(3000).fadeOut();
+return;
+}
+if (!email.includes('@')) {
+$('#formFeedback').text('📧 Enter a valid email address.').css('background','#c0392b').show().delay(3000).fadeOut();
+return;
+}
+const ticket = $('#ticketType option:selected').text();
+const event = $('#eventNameField').val();
+// Simulate registration success
+$('#formFeedback').text(`✅ Thanks ${name.split(' ')[0]}! You're registered for "${event}" (${ticket}). We'll email you.`)
+.css('background','#2c7a4d').show().delay(4000).fadeOut();
+// Optionally reset form
+$('#fullName, #email').val('');
+$('#ticketType').val('standard');
+console.log(`Registration: ${name}, ${email}, Event: ${event}, Ticket: ${ticket}`);
+});
+});
+</script>
+</body>
+</html>

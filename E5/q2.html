@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>🎉 Event Countdown · Registration Timer</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+min-height: 100vh;
+background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 2rem 1rem;
+}
+
+/* main event card */
+.event-container {
+max-width: 780px;
+width: 100%;
+background: rgba(255, 255, 255, 0.97);
+border-radius: 2rem;
+box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
+overflow: hidden;
+backdrop-filter: blur(2px);
+transition: all 0.2s;
+}
+
+/* hero banner */
+.hero {
+background: linear-gradient(112deg, #1e2a3a, #0f1722);
+padding: 2rem 2rem 1.8rem;
+text-align: center;
+color: white;
+border-bottom: 4px solid #ffb347;
+}
+
+.hero h1 {
+font-size: 2rem;
+letter-spacing: -0.5px;
+font-weight: 700;
+margin-bottom: 0.5rem;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 12px;
+flex-wrap: wrap;
+}
+
+.hero p {
+opacity: 0.85;
+font-size: 0.95rem;
+margin-top: 0.25rem;
+}
+
+.event-date-badge {
+background: #ffb34720;
+display: inline-block;
+padding: 0.3rem 1rem;
+border-radius: 60px;
+font-size: 0.85rem;
+font-weight: 500;
+margin-top: 0.8rem;
+backdrop-filter: blur(4px);
+border: 1px solid #ffb34760;
+}
+
+/* countdown timer section */
+.countdown-section {
+background: #ffffff;
+padding: 1.8rem 1.5rem;
+text-align: center;
+border-bottom: 1px solid #e9ecef;
+}
+
+.timer-title {
+font-weight: 600;
+color: #2c3e50;
+margin-bottom: 1rem;
+font-size: 1.1rem;
+letter-spacing: 1px;
+}
+
+.countdown {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 1.5rem;
+row-gap: 1.2rem;
+}
+
+.time-box {
+background: #f1f5f9;
+border-radius: 1.5rem;
+padding: 0.8rem 1.2rem;
+min-width: 100px;
+text-align: center;
+box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+transition: transform 0.2s;
+}
+
+.time-number {
+font-size: 3rem;
+font-weight: 800;
+font-family: monospace;
+background: #1e2a3a;
+background: linear-gradient(145deg, #1e2a3a, #0f1722);
+-webkit-background-clip: text;
+background-clip: text;
+color: #1e2a3a;
+letter-spacing: 2px;
+line-height: 1;
+}
+
+.time-label {
+font-size: 0.8rem;
+text-transform: uppercase;
+font-weight: 600;
+color: #4a627a;
+letter-spacing: 1px;
+margin-top: 0.4rem;
+}
+
+.closed-message {
+background: #d32f2f;
+color: white;
+font-weight: bold;
+padding: 1rem;
+border-radius: 60px;
+text-align: center;
+font-size: 1.3rem;
+letter-spacing: 1px;
+margin-top: 1rem;
+display: none;
+align-items: center;
+justify-content: center;
+gap: 10px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* registration form */
+.form-section {
+padding: 2rem 2rem 2rem;
+background: #fefcf7;
+}
+
+.form-group {
+margin-bottom: 1.4rem;
+}
+
+label {
+display: block;
+font-weight: 600;
+margin-bottom: 0.5rem;
+color: #1f3a4b;
+font-size: 0.9rem;
+}
+
+input, select {
+width: 100%;
+padding: 0.9rem 1rem;
+border-radius: 1.2rem;
+border: 1px solid #d4dce4;
+background: white;
+font-size: 1rem;
+transition: all 0.2s;
+outline: none;
+}
+
+input:focus, select:focus {
+border-color: #ffb347;
+box-shadow: 0 0 0 3px rgba(255, 180, 71, 0.2);
+}
+
+.register-btn {
+background: #2c7a4d;
+color: white;
+border: none;
+width: 100%;
+padding: 0.9rem;
+font-size: 1.1rem;
+font-weight: bold;
+border-radius: 2rem;
+cursor: pointer;
+transition: 0.2s;
+margin-top: 0.6rem;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.register-btn:hover:not(:disabled) {
+background: #1f5f3c;
+transform: scale(0.98);
+}
+
+.register-btn:disabled {
+background: #9aaeb9;
+cursor: not-allowed;
+opacity: 0.7;
+}
+
+.form-footer {
+font-size: 0.75rem;
+text-align: center;
+margin-top: 1rem;
+color: #6c7e91;
+}
+
+.success-toast {
+background: #2c7a4d;
+color: white;
+padding: 0.7rem;
+border-radius: 60px;
+text-align: center;
+margin-top: 1rem;
+display: none;
+font-weight: 500;
+}
+
+hr {
+margin: 0.5rem 0;
+border-color: #e9e2d4;
+}
+</style>
+</head>
+<body>
+<div class="event-container" id="eventApp">
+<div class="hero">
+<h1>
+<span>🌟</span> Tech & Innovation Summit 2026 <span>🚀</span>
+</h1>
+<p>Join industry leaders, visionary speakers, and global innovators</p>
+<div class="event-date-badge" id="targetDateDisplay">
+📅 Event date: May 30, 2026 · 18:00 UTC+2
+</div>
+</div>
+
+<!-- COUNTDOWN SECTION (dynamic) -->
+<div class="countdown-section">
+<div class="timer-title">⏳ Registration closes in</div>
+<div class="countdown" id="countdownTimer">
+<div class="time-box"><div class="time-number" id="days">00</div><div class="time-label">Days</div></div>
+<div class="time-box"><div class="time-number" id="hours">00</div><div class="time-label">Hours</div></div>
+<div class="time-box"><div class="time-number" id="minutes">00</div><div class="time-label">Minutes</div></div>
+<div class="time-box"><div class="time-number" id="seconds">00</div><div class="time-label">Seconds</div></div>
+</div>
+<div id="registrationClosedMessage" class="closed-message">
+🔒 REGISTRATION CLOSED 🔒
+</div>
+</div>
+
+<!-- REGISTRATION FORM -->
+<div class="form-section" id="registrationFormArea">
+<form id="eventRegistrationForm">
+<div class="form-group">
+<label>👤 Full Name</label>
+<input type="text" id="fullName" placeholder="e.g., Emma Watson" required>
+</div>
+<div class="form-group">
+<label>📧 Email Address</label>
+<input type="email" id="email" placeholder="hello@example.com" required>
+</div>
+<div class="form-group">
+<label>🎟️ Ticket Type</label>
+<select id="ticketType">
+<option value="standard">Standard (Free)</option>
+<option value="vip">VIP Access ($99)</option>
+<option value="speaker">Speaker / Partner</option>
+</select>
+</div>
+<button type="submit" class="register-btn" id="registerSubmitBtn">✍️ Register Now</button>
+<div class="form-footer">Limited seats — first come, first served.</div>
+<div id="formFeedback" class="success-toast"></div>
+</form>
+</div>
+</div>
+
+<script>
+(function() {
+// ------------------- CONFIGURATION -------------------
+// Set target future date (event registration deadline)
+// Year, Month (0-index), Day, Hour, Minute, Second
+// For demonstration: May 30, 2026 at 18:00:00 local time (user's timezone)
+// You can easily change this date:
+const TARGET_DATE = new Date(2026, 4, 30, 18, 0, 0); // May 30, 2026, 6:00 PM
+
+// DOM elements
+const daysSpan = document.getElementById('days');
+const hoursSpan = document.getElementById('hours');
+const minutesSpan = document.getElementById('minutes');
+const secondsSpan = document.getElementById('seconds');
+const closedMessageDiv = document.getElementById('registrationClosedMessage');
+const registerBtn = document.getElementById('registerSubmitBtn');
+const form = document.getElementById('eventRegistrationForm');
+const nameInput = document.getElementById('fullName');
+const emailInput = document.getElementById('email');
+const ticketSelect = document.getElementById('ticketType');
+const feedbackDiv = document.getElementById('formFeedback');
+const targetDateDisplaySpan = document.getElementById('targetDateDisplay');
+
+// State
+let countdownInterval = null;
+let isRegistrationClosed = false;
+
+// Helper: format number with leading zeros
+function formatTwoDigits(num) {
+return String(Math.floor(Math.max(0, num))).padStart(2, '0');
+}
+
+// Helper: update the countdown display and manage 'Registration Closed'
+function updateCountdown() {
+const now = new Date();
+const timeDiffMs = TARGET_DATE - now;
+
+// If deadline passed or timeDiff <= 0
+if (timeDiffMs <= 0) {
+// Registration closed state
+if (!isRegistrationClosed) {
+isRegistrationClosed = true;
+// clear interval to stop updates
+if (countdownInterval) {
+clearInterval(countdownInterval);
+countdownInterval = null;
+}
+// Show "Registration Closed" message with style
+closedMessageDiv.style.display = 'flex';
+// Set timer digits to 00:00:00:00
+if (daysSpan) daysSpan.innerText = '00';
+if (hoursSpan) hoursSpan.innerText = '00';
+if (minutesSpan) minutesSpan.innerText = '00';
+if (secondsSpan) secondsSpan.innerText = '00';
+
+// Disable registration form completely
+disableRegistrationForm(true);
+
+// Optionally update form area message
+const formSection = document.querySelector('.form-section');
+if (formSection && !document.getElementById('closedFormOverlay')) {
+const overlayMsg = document.createElement('div');
+overlayMsg.id = 'closedFormOverlay';
+overlayMsg.style.background = '#f5e6d3';
+overlayMsg.style.padding = '1rem';
+overlayMsg.style.borderRadius = '1rem';
+overlayMsg.style.textAlign = 'center';
+overlayMsg.style.marginTop = '0.5rem';
+overlayMsg.style.fontWeight = 'bold';
+overlayMsg.style.border = '1px solid #d32f2f';
+overlayMsg.style.color = '#a1220a';
+overlayMsg.innerHTML = '⛔ Registration is now closed. Thank you for your interest!';
+formSection.appendChild(overlayMsg);
+}
+}
+return; // exit early, no further updates needed
+}
+
+// If registration not closed, compute remaining units
+const totalSecondsRemaining = Math.floor(timeDiffMs / 1000);
+const daysRem = Math.floor(totalSecondsRemaining / 86400);
+const hoursRem = Math.floor((totalSecondsRemaining % 86400) / 3600);
+const minutesRem = Math.floor((totalSecondsRemaining % 3600) / 60);
+const secondsRem = totalSecondsRemaining % 60;
+
+// Update DOM elements (if they exist)
+if (daysSpan) daysSpan.innerText = formatTwoDigits(daysRem);
+if (hoursSpan) hoursSpan.innerText = formatTwoDigits(hoursRem);
+if (minutesSpan) minutesSpan.innerText = formatTwoDigits(minutesRem);
+if (secondsSpan) secondsSpan.innerText = formatTwoDigits(secondsRem);
+
+// Extra polish: if time remaining but message was hidden, ensure closed message hidden
+if (closedMessageDiv && closedMessageDiv.style.display === 'flex') {
+closedMessageDiv.style.display = 'none';
+}
+
+// ensure form is enabled if previously disabled due to some glitch
+if (!isRegistrationClosed) {
+disableRegistrationForm(false);
+}
+}
+
+// Disable/enable all form inputs + submit button
+function disableRegistrationForm(disable) {
+if (!form) return;
+const inputs = form.querySelectorAll('input, select, button');
+inputs.forEach(input => {
+if (input.type !== 'button' || input.id === 'registerSubmitBtn') {
+input.disabled = disable;
+}
+});
+if (registerBtn) registerBtn.disabled = disable;
+
+// add visual disabled style to fields
+const formGroups = document.querySelectorAll('.form-group input, .form-group select');
+formGroups.forEach(field => {
+if (disable) {
+field.style.backgroundColor = '#f1f0ec';
+field.style.opacity = '0.8';
+} else {
+field.style.backgroundColor = '';
+field.style.opacity = '';
+}
+});
+if (disable) {
+registerBtn.style.cursor = 'not-allowed';
+} else {
+registerBtn.style.cursor = 'pointer';
+}
+}
+
+// Show temporary feedback message (auto hides after 3 sec)
+function showFeedback(msg, isError = false) {
+if (feedbackDiv) {
+feedbackDiv.innerText = msg;
+feedbackDiv.style.backgroundColor = isError ? '#c0392b' : '#2c7a4d';
+feedbackDiv.style.display = 'block';
+setTimeout(() => {
+if (feedbackDiv) feedbackDiv.style.display = 'none';
+}, 3200);
+}
+}
+
+// Handle form submission (only if registration is open)
+function handleFormSubmit(e) {
+e.preventDefault();
+
+// If registration closed, prevent registration and show error
+if (isRegistrationClosed) {
+showFeedback('❌ Registration is closed. Event is fully booked.', true);
+return;
+}
+
+// Additional check: if countdown is zero but interval hasn't flipped state yet (edge)
+const now = new Date();
+if (now >= TARGET_DATE) {
+// re-trigger closure if needed
+updateCountdown(); // will set isRegistrationClosed = true and disable
+showFeedback('Registration deadline passed. Cannot register now.', true);
+return;
+}
+
+// Basic validation
+const name = nameInput?.value.trim();
+const email = emailInput?.value.trim();
+if (!name || !email) {
+showFeedback('⚠️ Please fill in both name and email.', true);
+return;
+}
+if (!email.includes('@') || !email.includes('.')) {
+showFeedback('📧 Please enter a valid email address.', true);
+return;
+}
+
+// Simulate successful registration (store in console / demo)
+const ticketValue = ticketSelect?.options[ticketSelect.selectedIndex]?.text || 'Standard';
+console.log(`✅ Registration success: ${name}, ${email}, Ticket: ${ticketValue}`);
+
+// Show success message, optionally reset or keep form but disable further submission? we just show thanks.
+showFeedback(`🎉 Thanks ${name.split(' ')[0]}! You're registered for ${ticketValue}. We'll email you.`);
+
+// Optional: clear form fields after registration (good UX)
+if (nameInput) nameInput.value = '';
+if (emailInput) emailInput.value = '';
+// but keep ticket select default
+if (ticketSelect) ticketSelect.selectedIndex = 0;
+
+// Optional: you could disable form after single registration for demo purposes, but we keep open for multiple demos
+// For real scenario you might redirect, but we'll allow multiple demo registrations until closure.
+}
+
+// Helper: Display target date nicely in header (local format)
+function setTargetDateDisplay() {
+if (targetDateDisplaySpan) {
+const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+const formatted = TARGET_DATE.toLocaleDateString(undefined, options);
+targetDateDisplaySpan.innerText = `📅 Registration deadline: ${formatted}`;
+}
+}
+
+// Initialize timer, setInterval, and clean up on page unload
+function initCountdown() {
+// first immediate update to avoid 1sec delay
+updateCountdown();
+
+// only start interval if registration still open (or if it hasn't reached zero yet)
+// check if already closed after updateCountdown
+if (!isRegistrationClosed) {
+if (countdownInterval) clearInterval(countdownInterval);
+countdownInterval = setInterval(() => {
+updateCountdown();
+}, 1000);
+} else {
+// if already closed, no interval needed
+if (countdownInterval) clearInterval(countdownInterval);
+countdownInterval = null;
+}
+}
+
+// Attach event listener for form submission
+if (form) {
+form.addEventListener('submit', handleFormSubmit);
+}
+
+// Set target date display and start countdown
+setTargetDateDisplay();
+initCountdown();
+
+// Additional safeguard: re-check when tab becomes active (optional)
+document.addEventListener('visibilitychange', function() {
+if (!document.hidden && !isRegistrationClosed && !countdownInterval) {
+// if interval missing but still open, restart it
+countdownInterval = setInterval(() => {
+updateCountdown();
+}, 1000);
+} else if (document.hidden && countdownInterval && !isRegistrationClosed) {
+// optional: we can keep interval running, but no need to clear; it's fine
+}
+});
+
+// Clean up interval on page unload (good practice)
+window.addEventListener('beforeunload', () => {
+if (countdownInterval) {
+clearInterval(countdownInterval);
+}
+});
+
+// Expose reset for debugging (not needed but robust)
+console.log('Event countdown timer started | Deadline:', TARGET_DATE);
+})();
+</script>
+</body>
+</html>

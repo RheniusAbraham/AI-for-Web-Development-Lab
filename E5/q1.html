@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>⚡ Speed Quiz | 10‑Second Challenge</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: system-ui, 'Segoe UI', 'Inter', 'Poppins', sans-serif;
+}
+
+body {
+background: linear-gradient(145deg, #0b2b40 0%, #0a1c2a 100%);
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 1.5rem;
+}
+
+/* Main Quiz Card */
+.quiz-card {
+max-width: 900px;
+width: 100%;
+background: rgba(255, 255, 255, 0.96);
+backdrop-filter: blur(2px);
+border-radius: 2.5rem;
+box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.1);
+overflow: hidden;
+transition: all 0.2s ease;
+}
+
+/* Header with timer & warning */
+.quiz-header {
+background: #1e2f3f;
+padding: 1.2rem 2rem;
+color: white;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: baseline;
+gap: 0.8rem;
+border-bottom: 3px solid #ffb347;
+}
+
+.timer-section {
+background: #0f1a24;
+padding: 0.5rem 1.2rem;
+border-radius: 60px;
+display: inline-flex;
+align-items: baseline;
+gap: 0.5rem;
+font-weight: 600;
+box-shadow: inset 0 1px 2px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.timer-label {
+font-size: 0.85rem;
+letter-spacing: 1px;
+text-transform: uppercase;
+opacity: 0.8;
+}
+
+.timer-value {
+font-size: 2rem;
+font-weight: 800;
+font-family: monospace;
+line-height: 1;
+background: #00000055;
+padding: 0 0.4rem;
+border-radius: 40px;
+letter-spacing: 1px;
+}
+
+.warning-message {
+background: #ffb34720;
+backdrop-filter: blur(4px);
+padding: 0.4rem 1.2rem;
+border-radius: 40px;
+font-weight: 600;
+font-size: 0.9rem;
+border-left: 3px solid #ff8c00;
+color: #ffdd99;
+transition: all 0.2s;
+}
+
+.warning-active {
+background: #d43f1f;
+color: white;
+border-left-color: #ffea80;
+animation: pulseWarning 0.9s infinite;
+font-weight: 700;
+}
+
+@keyframes pulseWarning {
+0% { opacity: 0.7; transform: scale(0.98);}
+100% { opacity: 1; transform: scale(1);}
+}
+
+/* questions area */
+.quiz-body {
+padding: 2rem 2rem 1.5rem 2rem;
+background: #fefcf5;
+}
+
+.question-item {
+background: white;
+border-radius: 1.5rem;
+padding: 1.3rem 1.5rem;
+margin-bottom: 1.5rem;
+box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+border: 1px solid #e9e2d4;
+transition: all 0.2s;
+}
+
+.question-text {
+font-weight: 700;
+font-size: 1.2rem;
+color: #1e2f3f;
+margin-bottom: 1rem;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.q-marker {
+background: #1e2f3f;
+color: white;
+width: 28px;
+height: 28px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+border-radius: 30px;
+font-size: 0.9rem;
+font-weight: bold;
+}
+
+.options {
+display: flex;
+flex-wrap: wrap;
+gap: 1rem;
+row-gap: 0.8rem;
+margin-left: 0.3rem;
+}
+
+.option {
+display: flex;
+align-items: center;
+gap: 0.6rem;
+background: #f8f5ee;
+padding: 0.5rem 1.2rem;
+border-radius: 60px;
+border: 1px solid #e2d9ce;
+transition: all 0.15s;
+cursor: pointer;
+}
+
+input[type="radio"] {
+accent-color: #2c5a7a;
+width: 1.1rem;
+height: 1.1rem;
+margin: 0;
+cursor: pointer;
+}
+
+.option label {
+font-weight: 500;
+color: #2c3e44;
+cursor: pointer;
+font-size: 0.95rem;
+}
+
+input[type="radio"]:disabled + label,
+input[type="radio"]:disabled {
+cursor: not-allowed;
+opacity: 0.7;
+}
+
+.disabled-opt {
+background: #ece6db;
+opacity: 0.85;
+}
+
+/* submit & score */
+.action-area {
+padding: 0.5rem 2rem 2rem 2rem;
+background: #fefcf5;
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+justify-content: space-between;
+gap: 1rem;
+border-top: 1px solid #ece2d4;
+}
+
+.submit-btn {
+background: #2c5a7a;
+border: none;
+color: white;
+font-weight: bold;
+font-size: 1.1rem;
+padding: 0.8rem 2rem;
+border-radius: 60px;
+cursor: pointer;
+transition: all 0.2s;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.submit-btn:hover:not(:disabled) {
+background: #1f445f;
+transform: scale(0.97);
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.submit-btn:disabled {
+background: #9aaeb9;
+cursor: default;
+opacity: 0.7;
+transform: none;
+}
+
+.score-board {
+background: #eef3f0;
+padding: 0.5rem 1.4rem;
+border-radius: 40px;
+font-weight: 700;
+font-size: 1.2rem;
+color: #1e5631;
+border-left: 4px solid #2c8c4a;
+}
+
+.score-board span {
+font-size: 1.5rem;
+font-weight: 800;
+}
+
+footer {
+font-size: 0.7rem;
+text-align: center;
+background: #eae3d4;
+padding: 0.6rem;
+color: #4a5b66;
+}
+
+@media (max-width: 650px) {
+.quiz-header {
+flex-direction: column;
+align-items: stretch;
+}
+.options {
+flex-direction: column;
+gap: 0.6rem;
+}
+.question-item {
+padding: 1rem;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="quiz-card" id="quizAppContainer">
+<div class="quiz-header">
+<div class="timer-section">
+<span class="timer-label">⏱️ TIME LEFT</span>
+<span class="timer-value" id="timerDisplay">10</span><span style="font-size:1rem;">s</span>
+</div>
+<div class="warning-message" id="warningMsg">
+⚡ ready?
+</div>
+</div>
+
+<div id="quizDynamicArea" class="quiz-body">
+<!-- Questions will be injected dynamically with pure DOM manipulation -->
+<div style="text-align:center; padding:2rem;">Loading quiz challenge...</div>
+</div>
+
+<div class="action-area">
+<button class="submit-btn" id="submitQuizBtn">✔ SUBMIT QUIZ</button>
+<div class="score-board" id="finalScoreBoard">
+📊 Score: --/5
+</div>
+</div>
+<footer>⚡ 10 seconds total · Auto‑submit on timer zero</footer>
+</div>
+
+<script>
+// ---------- QUIZ DATA (5 MCQs) ----------
+const QUIZ_DATA = [
+{
+text: "🌍 What is the capital of France?",
+options: ["Berlin", "Madrid", "Paris", "Lisbon"],
+correct: "C" // Paris is 3rd option (index 2) -> letter C
+},
+{
+text: "🔴 Which planet is known as the Red Planet?",
+options: ["Mars", "Jupiter", "Venus", "Saturn"],
+correct: "A" // Mars -> first option
+},
+{
+text: "📖 Who wrote 'Romeo and Juliet'?",
+options: ["Charles Dickens", "Mark Twain", "Jane Austen", "William Shakespeare"],
+correct: "D" // Shakespeare = 4th option
+},
+{
+text: "🌊 What is the largest ocean on Earth?",
+options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+correct: "D" // Pacific Ocean
+},
+{
+text: "🥇 What is the chemical symbol for Gold?",
+options: ["Go", "Gd", "Au", "Ag"],
+correct: "C" // Au -> third option
+}
+];
+
+// ---------- GLOBAL VARIABLES ----------
+let timerInterval = null; // stores setInterval ID
+let timeLeft = 10; // total duration = 10 seconds
+let isSubmitted = false; // prevents double submission (auto or manual)
+let correctAnswerMap = {}; // dynamic: { q1: "C", q2: "A", ... }
+let totalQuestions = QUIZ_DATA.length; // = 5
+
+// DOM elements
+const quizContainer = document.getElementById("quizDynamicArea");
+const timerDisplaySpan = document.getElementById("timerDisplay");
+const warningMsgDiv = document.getElementById("warningMsg");
+const submitBtn = document.getElementById("submitQuizBtn");
+const scoreBoardDiv = document.getElementById("finalScoreBoard");
+
+// ---------- HELPER: Update Timer UI & Warning Message (DOM manipulation) ----------
+function updateTimerUI() {
+if (!timerDisplaySpan) return;
+timerDisplaySpan.innerText = timeLeft;
+// additional style when time is critical
+if (timeLeft <= 5) {
+timerDisplaySpan.style.color = "#ffb347";
+timerDisplaySpan.style.fontWeight = "900";
+} else {
+timerDisplaySpan.style.color = "white";
+timerDisplaySpan.style.fontWeight = "800";
+}
+// Show warning message when exactly 5 seconds or less (and quiz not submitted)
+if (!isSubmitted) {
+if (timeLeft <= 5 && timeLeft > 0) {
+warningMsgDiv.innerHTML = "⚠️ Only 5 seconds remaining! ⚠️";
+warningMsgDiv.classList.add("warning-active");
+} else if (timeLeft === 0) {
+warningMsgDiv.innerHTML = "⏰ TIME'S UP! Submitting...";
+warningMsgDiv.classList.add("warning-active");
+} else {
+warningMsgDiv.innerHTML = "✨ Stay focused ✨";
+warningMsgDiv.classList.remove("warning-active");
+}
+} else {
+// after submission, show final status
+warningMsgDiv.innerHTML = "📋 Quiz completed";
+warningMsgDiv.classList.remove("warning-active");
+}
+}
+
+// ---------- BUILD QUIZ DYNAMICALLY (DOM manipulation) ----------
+function buildQuiz() {
+if (!quizContainer) return;
+quizContainer.innerHTML = ""; // clear loading text
+
+for (let i = 0; i < QUIZ_DATA.length; i++) {
+const q = QUIZ_DATA[i];
+const questionIndex = i + 1;
+const questionName = `q${questionIndex}`; // name attribute: q1, q2...q5
+
+// store correct answer for this question (letter like "A", "B", "C", "D")
+correctAnswerMap[questionName] = q.correct;
+
+// Create main question div
+const questionDiv = document.createElement("div");
+questionDiv.className = "question-item";
+questionDiv.setAttribute("data-qname", questionName);
+
+// Question text with marker
+const questionHeader = document.createElement("div");
+questionHeader.className = "question-text";
+const markerSpan = document.createElement("span");
+markerSpan.className = "q-marker";
+markerSpan.innerText = questionIndex;
+const questionTextSpan = document.createElement("span");
+questionTextSpan.innerText = q.text;
+questionHeader.appendChild(markerSpan);
+questionHeader.appendChild(questionTextSpan);
+
+// Options container
+const optionsDiv = document.createElement("div");
+optionsDiv.className = "options";
+
+// Create radio options (A, B, C, D)
+const optionLetters = ["A", "B", "C", "D"];
+for (let optIdx = 0; optIdx < q.options.length; optIdx++) {
+const optLetter = optionLetters[optIdx];
+const optText = q.options[optIdx];
+
+const optionWrapper = document.createElement("div");
+optionWrapper.className = "option";
+
+const radioInput = document.createElement("input");
+radioInput.type = "radio";
+radioInput.name = questionName; // groups radios per question
+radioInput.value = optLetter; // value = A, B, C or D
+radioInput.id = `${questionName}_${optLetter}`;
+
+const label = document.createElement("label");
+label.htmlFor = radioInput.id;
+label.innerText = `${optLetter}. ${optText}`;
+
+optionWrapper.appendChild(radioInput);
+optionWrapper.appendChild(label);
+optionsDiv.appendChild(optionWrapper);
+}
+
+questionDiv.appendChild(questionHeader);
+questionDiv.appendChild(optionsDiv);
+quizContainer.appendChild(questionDiv);
+}
+}
+
+// ---------- DISABLE ALL OPTIONS (radios + submit button) after submission ----------
+function disableAllOptionsAndSubmit() {
+// 1) disable all radio buttons inside quiz area
+const allRadios = document.querySelectorAll('#quizDynamicArea input[type="radio"]');
+allRadios.forEach(radio => {
+radio.disabled = true;
+// add visual disabled effect to parent .option
+const parentOpt = radio.closest('.option');
+if (parentOpt) {
+parentOpt.style.opacity = "0.7";
+parentOpt.style.background = "#e8e0d2";
+}
+});
+
+// 2) disable submit button
+if (submitBtn) {
+submitBtn.disabled = true;
+}
+}
+
+// ---------- CALCULATE FINAL SCORE & DISPLAY ----------
+function calculateAndDisplayScore() {
+let correctCount = 0;
+
+// iterate through each question (1..totalQuestions)
+for (let i = 1; i <= totalQuestions; i++) {
+const qName = `q${i}`;
+const selectedRadio = document.querySelector(`input[name="${qName}"]:checked`);
+const userAnswer = selectedRadio ? selectedRadio.value : null;
+const correctAnswerLetter = correctAnswerMap[qName];
+
+if (userAnswer && userAnswer === correctAnswerLetter) {
+correctCount++;
+}
+}
+
+// Update final score board
+if (scoreBoardDiv) {
+scoreBoardDiv.innerHTML = `🏆 SCORE: ${correctCount} / ${totalQuestions}`;
+// add slight animation / highlight
+scoreBoardDiv.style.transform = "scale(1.02)";
+setTimeout(() => { if(scoreBoardDiv) scoreBoardDiv.style.transform = ""; }, 300);
+}
+
+return correctCount;
+}
+
+// ---------- MAIN SUBMIT LOGIC (auto or manual) ----------
+function finalizeQuizSubmission() {
+// Prevent double execution
+if (isSubmitted) return;
+isSubmitted = true;
+
+// 1) Stop the timer interval if it's still running (clearInterval)
+if (timerInterval) {
+clearInterval(timerInterval);
+timerInterval = null;
+}
+
+// 2) Disable all radio options and submit button
+disableAllOptionsAndSubmit();
+
+// 3) Calculate final score and display in score board
+calculateAndDisplayScore();
+
+// 4) Update warning message to show final status (DOM manipulation)
+warningMsgDiv.innerHTML = "✅ Quiz submitted · Score ready";
+warningMsgDiv.classList.add("warning-active");
+warningMsgDiv.style.background = "#2c5a7a";
+warningMsgDiv.style.color = "white";
+
+// 5) Ensure timer display shows final state (freeze)
+if (timerDisplaySpan) {
+if (timeLeft === 0) timerDisplaySpan.innerText = "0";
+timerDisplaySpan.style.opacity = "0.8";
+}
+
+// Additional minor: remove any lingering interval safety
+if (timerInterval) clearInterval(timerInterval);
+}
+
+// ---------- TIMER IMPLEMENTATION (setInterval, clearInterval, countdown) ----------
+function startTimer() {
+if (timerInterval) clearInterval(timerInterval); // safety clean
+
+timerInterval = setInterval(() => {
+// If already submitted, we don't process timer actions
+if (isSubmitted) {
+if (timerInterval) clearInterval(timerInterval);
+return;
+}
+
+// TIME REACHED ZERO? Auto-submit
+if (timeLeft <= 0) {
+// clear interval before submission to avoid recursion
+if (timerInterval) {
+clearInterval(timerInterval);
+timerInterval = null;
+}
+// auto submit only if not already submitted
+if (!isSubmitted) {
+finalizeQuizSubmission();
+}
+return;
+}
+
+// Decrement timer (standard countdown)
+timeLeft--;
+
+// update timer display every second
+if (timerDisplaySpan) {
+timerDisplaySpan.innerText = timeLeft;
+}
+
+// Update warning message based on time left (only 5 seconds remaining feature)
+// According to spec: When only 5 seconds remain, display message
+if (timeLeft <= 5 && timeLeft > 0 && !isSubmitted) {
+warningMsgDiv.innerHTML = "⚠️ Only 5 seconds remaining! ⚠️";
+warningMsgDiv.classList.add("warning-active");
+} else if (timeLeft === 0 && !isSubmitted) {
+warningMsgDiv.innerHTML = "⏰ TIME'S UP! Auto-submitting...";
+warningMsgDiv.classList.add("warning-active");
+} else if (timeLeft > 5 && !isSubmitted) {
+warningMsgDiv.innerHTML = "⚡ Quick! Select answers ⚡";
+warningMsgDiv.classList.remove("warning-active");
+}
+
+// Additional UI styling for timer when critical
+if (timeLeft <= 5) {
+timerDisplaySpan.style.color = "#ffaa55";
+timerDisplaySpan.style.fontWeight = "bold";
+} else {
+timerDisplaySpan.style.color = "white";
+}
+
+// If after decrement timer becomes 0 => auto-submit
+if (timeLeft === 0 && !isSubmitted) {
+if (timerInterval) {
+clearInterval(timerInterval);
+timerInterval = null;
+}
+finalizeQuizSubmission();
+}
+}, 1000);
+}
+
+// ---------- MANUAL SUBMIT HANDLER ----------
+function handleManualSubmit() {
+if (isSubmitted) return; // already finished
+
+// Stop timer first (clearInterval)
+if (timerInterval) {
+clearInterval(timerInterval);
+timerInterval = null;
+}
+
+// finalize submission (disable, score, etc)
+finalizeQuizSubmission();
+}
+
+// ---------- INITIALIZATION (DOM ready) ----------
+function initQuiz() {
+// Build quiz structure (5 MCQs) using pure DOM manipulation
+buildQuiz();
+
+// Reset global state
+timeLeft = 10;
+isSubmitted = false;
+
+// Reset timer display and warning message visually
+if (timerDisplaySpan) timerDisplaySpan.innerText = "10";
+if (warningMsgDiv) {
+warningMsgDiv.innerHTML = "⚡ 10 seconds total ⚡";
+warningMsgDiv.classList.remove("warning-active");
+warningMsgDiv.style.background = "";
+warningMsgDiv.style.color = "";
+}
+
+// Reset score board display to default
+if (scoreBoardDiv) {
+scoreBoardDiv.innerHTML = "📊 Score: --/5";
+scoreBoardDiv.style.transform = "";
+}
+
+// Enable submit button (if previously disabled)
+if (submitBtn) {
+submitBtn.disabled = false;
+}
+
+// Ensure all radio buttons are enabled (in case of reset but we're fresh)
+const allRadios = document.querySelectorAll('#quizDynamicArea input[type="radio"]');
+allRadios.forEach(radio => {
+radio.disabled = false;
+const parentOpt = radio.closest('.option');
+if (parentOpt) {
+parentOpt.style.opacity = "1";
+parentOpt.style.background = "#f8f5ee";
+}
+});
+
+// Remove any leftover checked states (optional, ensures fresh start)
+// but we keep fresh start no pre-selected answers -> good user experience
+// make sure nothing is pre-checked
+allRadios.forEach(radio => {
+radio.checked = false;
+});
+
+// start timer with setInterval
+startTimer();
+}
+
+// Attach event listener to manual submit button
+if (submitBtn) {
+// remove any previous listener to avoid duplication (safe)
+const newSubmitBtn = submitBtn.cloneNode(true);
+submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
+window.submitBtn = newSubmitBtn;
+newSubmitBtn.addEventListener("click", handleManualSubmit);
+// update reference
+document.getElementById("submitQuizBtn").addEventListener("click", handleManualSubmit);
+}
+
+// Final: Initialize everything when DOM fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+initQuiz();
+});
+
+// Edge protection: if any weird reload but keep clean
+window.addEventListener("beforeunload", function() {
+if (timerInterval) clearInterval(timerInterval);
+});
+</script>
+</body>
+</html>
