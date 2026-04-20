@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Search</title>
+  <style>
+    :root {
+      --bg-start: #f8fafc;
+      --bg-end: #d1fae5;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #059669;
+      --accent-dark: #047857;
+      --success-bg: #dcfce7;
+      --success-text: #166534;
+      --error-bg: #fee2e2;
+      --error-text: #b91c1c;
+      --border: #d1d5db;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(100%, 540px);
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 20px 45px rgba(5, 150, 105, 0.15);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 0 0 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.15);
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 22px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    .result {
+      display: none;
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 14px;
+      line-height: 1.8;
+      font-weight: 600;
+      white-space: pre-line;
+    }
+
+    .result.success {
+      display: block;
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .result.error {
+      display: block;
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+
+    .home-link {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .home-link a {
+      color: var(--accent-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 24px;
+      }
+
+      .search-row {
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Admin Search</h1>
+    <p>Search registration details by Register Number.</p>
+
+    <div class="search-row">
+      <input type="text" id="searchRegno" placeholder="Enter Register Number">
+      <button id="searchButton" type="button">Search</button>
+    </div>
+
+    <div id="result" class="result"></div>
+    <div class="home-link"><a href="/">Back to Registration</a></div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchRegno");
+    const searchButton = document.getElementById("searchButton");
+    const resultBox = document.getElementById("result");
+
+    function showResult(text, type) {
+      resultBox.textContent = text;
+      resultBox.className = `result ${type}`;
+    }
+
+    async function searchRegistration() {
+      const regno = searchInput.value.trim();
+
+      if (!regno) {
+        showResult("Please enter a Register Number.", "error");
+        return;
+      }
+
+      try {
+        const response = await fetch(`/search?regno=${encodeURIComponent(regno)}`);
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          showResult(result.message || "No registration found for this Register Number.", "error");
+          return;
+        }
+
+        showResult(
+          `Register Number : ${result.regno}\nName            : ${result.name}\nEvents          : ${result.events.join(", ")}`,
+          "success"
+        );
+      } catch (error) {
+        showResult("Unable to complete the search right now.", "error");
+      }
+    }
+
+    searchButton.addEventListener("click", searchRegistration);
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        searchRegistration();
+      }
+    });
+  </script>
+</body>
+</html>

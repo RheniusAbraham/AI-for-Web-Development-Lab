@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Registration</title>
+  <style>
+    :root {
+      --bg-start: #f3f7ff;
+      --bg-end: #dbeafe;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --success-bg: #dcfce7;
+      --success-text: #166534;
+      --error-bg: #fee2e2;
+      --error-text: #b91c1c;
+      --border: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(100%, 520px);
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 20px 45px rgba(37, 99, 235, 0.16);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    p {
+      margin: 0 0 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+
+    .checkbox-group {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+    }
+
+    .checkbox-item label {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    .message.success {
+      display: block;
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .message.error {
+      display: block;
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+
+    .admin-link {
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .admin-link a {
+      color: var(--accent-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 24px;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Event Registration</h1>
+    <p>Register for up to three events.</p>
+
+    <form id="registrationForm">
+      <div class="field">
+        <label for="regno">Register Number</label>
+        <input type="text" id="regno" name="regno" required>
+      </div>
+
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="field">
+        <label>Select Events</label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="coding" name="events" value="Coding Challenge">
+            <label for="coding">Coding Challenge</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="debugging" name="events" value="Debugging Contest">
+            <label for="debugging">Debugging Contest</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="webdesign" name="events" value="Web Design">
+            <label for="webdesign">Web Design</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="quiz" name="events" value="Quiz Competition">
+            <label for="quiz">Quiz Competition</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="paper" name="events" value="Paper Presentation">
+            <label for="paper">Paper Presentation</label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit">Submit Registration</button>
+    </form>
+
+    <div id="message" class="message"></div>
+    <div class="admin-link"><a href="/admin">Go to Admin Search</a></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("registrationForm");
+    const messageBox = document.getElementById("message");
+    const eventCheckboxes = Array.from(document.querySelectorAll('input[name="events"]'));
+
+    function showMessage(text, type) {
+      messageBox.textContent = text;
+      messageBox.className = `message ${type}`;
+    }
+
+    eventCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        const checkedCount = eventCheckboxes.filter((item) => item.checked).length;
+        if (checkedCount > 3) {
+          checkbox.checked = false;
+          alert("You can select a maximum of 3 events.");
+        }
+      });
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      messageBox.className = "message";
+      messageBox.textContent = "";
+
+      const formData = new FormData(form);
+      const selectedEvents = formData.getAll("events");
+      const regno = formData.get("regno").trim();
+      const name = formData.get("name").trim();
+
+      if (!regno || !name || selectedEvents.length === 0) {
+        showMessage("All fields are required and at least one event must be selected.", "error");
+        return;
+      }
+
+      if (selectedEvents.length > 3) {
+        showMessage("You can select a maximum of 3 events.", "error");
+        return;
+      }
+
+      try {
+        const response = await fetch("/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            regno,
+            name,
+            events: selectedEvents
+          })
+        });
+
+        const result = await response.json();
+        showMessage(result.message, result.success ? "success" : "error");
+
+        if (result.success) {
+          form.reset();
+        }
+      } catch (error) {
+        showMessage("Unable to submit registration at the moment.", "error");
+      }
+    });
+  </script>
+</body>
+</html>
