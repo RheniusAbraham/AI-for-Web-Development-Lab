@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration | AIWED-ex-8</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Event Registration</h1>
+                <p>Select your favorite events (Max 3)</p>
+            </div>
+            <form id="eventForm">
+                <div class="input-group">
+                    <label for="regNumber">Register Number</label>
+                    <input type="text" id="regNumber" name="regNumber" required placeholder="e.g. 2024CS001">
+                </div>
+                
+                <div class="input-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="John Doe">
+                </div>
+
+                <div class="checkbox-section">
+                    <label class="section-label">Select Events (Choose up to 3)</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="events" value="Coding Challenge">
+                            <span class="custom-checkbox"></span>
+                            Coding Challenge
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="events" value="Debugging Contest">
+                            <span class="custom-checkbox"></span>
+                            Debugging Contest
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="events" value="Web Design">
+                            <span class="custom-checkbox"></span>
+                            Web Design
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="events" value="Quiz Competition">
+                            <span class="custom-checkbox"></span>
+                            Quiz Competition
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="events" value="Paper Presentation">
+                            <span class="custom-checkbox"></span>
+                            Paper Presentation
+                        </label>
+                    </div>
+                    <p id="error-message" class="error-text"></p>
+                </div>
+
+                <button type="submit" id="submitBtn">Register Now</button>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

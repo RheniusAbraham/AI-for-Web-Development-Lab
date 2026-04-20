@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | AIWED-ex-8</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .result-card {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            display: none;
+        }
+        .result-card p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .result-card strong {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Admin Search</h1>
+                <p>Search participant by Register Number</p>
+            </div>
+            
+            <div class="input-group">
+                <label for="searchRegno">Register Number</label>
+                <input type="text" id="searchRegno" placeholder="Enter Register Number">
+            </div>
+            
+            <button id="searchBtn">Search</button>
+
+            <div id="searchResult" class="result-card">
+                <p><strong>Register No:</strong> <span id="resReg"></span></p>
+                <p><strong>Name:</strong> <span id="resName"></span></p>
+                <p><strong>Events:</strong> <span id="resEvents"></span></p>
+            </div>
+            <p id="admin-error" class="error-text" style="text-align: center; margin-top: 10px;"></p>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">← Back to Registration</a>
+        </div>
+    </div>
+
+    <script>
+        const searchBtn = document.getElementById('searchBtn');
+        const searchInput = document.getElementById('searchRegno');
+        const resultCard = document.getElementById('searchResult');
+        const errorMsg = document.getElementById('admin-error');
+
+        searchBtn.addEventListener('click', async () => {
+            const regno = searchInput.value.trim();
+            if (!regno) {
+                errorMsg.textContent = 'Please enter a register number.';
+                resultCard.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/search/${regno}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    errorMsg.textContent = '';
+                    resultCard.style.display = 'block';
+                    document.getElementById('resReg').textContent = data.regno;
+                    document.getElementById('resName').textContent = data.name;
+                    document.getElementById('resEvents').textContent = data.events;
+                } else {
+                    errorMsg.textContent = data.message;
+                    resultCard.style.display = 'none';
+                }
+            } catch (error) {
+                errorMsg.textContent = 'Server error. Is the server running?';
+                resultCard.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
